@@ -35,10 +35,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   day_night_time_picker: ^1.0.5
-  animations: ^2.0.3
+  animate_do: ^2.1.0
   curved_drawer_fork: ^0.0.1+1
   get:
   visibility_detector: ^0.3.3
+  glassmorphism_kit: ^0.2.1
 
 dev_dependencies:
   flutter_test:
