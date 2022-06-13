@@ -20,7 +20,6 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-
   // Initialize index of drawer item
   int index = 0;
 
@@ -31,22 +30,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
     DrawerItem(icon: Icon(Icons.logout_rounded), label: "Logout"),
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title, style: const TextStyle(color: Colors.white)),
+        title: Text(widget.title),
 
-        // Applied gradient color to the app bar
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: [
-              Color(0xff00a5ff),
-              Color(0xff05f695),
-            ])
-          )
-          ),
       ),
 
       // check if drawer is open or closed
@@ -66,19 +55,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
         // Actual drawer implementation
         child: CurvedDrawer(
-          index: index,
-          width: 65,
-          color: Colors.blue,
-          buttonBackgroundColor: Colors.blue.shade900,
-          labelColor: Colors.white,
-          items: _drawerItems,
-          onTap: (newIndex) {
-            setState(() {
-              index = newIndex;
-            });
-          },
+            index: index,
+            width: 65,
+            color: Colors.blue,
+            buttonBackgroundColor: Colors.blue,
+            labelColor: Colors.white,
+            items: _drawerItems,
+            onTap: (newIndex) {
+              setState(() {
+                index = newIndex;
+              });
+            },
+          ),
         ),
-      ),
 
       // content other than the drawer
       body: Center(
@@ -87,6 +76,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           children: <Widget>[
             Text(
               'Current index is $index',
+              style: TextStyle(fontSize: 30),
             ),
           ],
         ),
