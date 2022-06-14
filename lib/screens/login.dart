@@ -1,4 +1,4 @@
-// dummy SignUp page
+// dummy LogIn page
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';

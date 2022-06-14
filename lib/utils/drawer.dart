@@ -35,7 +35,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-
       ),
 
       // check if drawer is open or closed

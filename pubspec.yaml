@@ -39,7 +39,8 @@ dependencies:
   curved_drawer_fork: ^0.0.1+1
   get:
   visibility_detector: ^0.3.3
-  glassmorphism_kit: ^0.2.1
+  tab_indicator_styler: ^2.0.0
+  simple_animated_icon: ^1.1.0
 
 dev_dependencies:
   flutter_test:

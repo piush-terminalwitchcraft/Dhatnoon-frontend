@@ -1,6 +1,8 @@
 import 'package:components/screens/login.dart';
+import 'package:components/screens/signup.dart';
 import 'package:components/screens/splash.dart';
 import 'package:components/utils/drawer.dart';
+import 'package:components/utils/tabBar.dart';
 import 'package:components/utils/timepicker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,9 +18,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // useMaterial3: true,
-        primarySwatch: Colors.blue,
+        // primarySwatch: Colors.blue,
       ),
-      home: const LogIn()
+      home: MyHomePage(title: "nothing",)
     );
   }
 }
