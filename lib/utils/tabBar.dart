@@ -1,3 +1,4 @@
+import 'package:bouncy_widget/bouncy_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_animated_icon/simple_animated_icon.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -23,12 +24,13 @@ class _MyHomePageState extends State<MyHomePage>
   void initState() {
     super.initState();
 
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
-          ..addListener(() {
-            // call `build` on animation progress
-            setState(() {});
-          });
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    )..addListener(() {
+        // call `build` on animation progress
+        setState(() {});
+      });
 
     _progress =
         Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
@@ -110,16 +112,23 @@ class _MyHomePageState extends State<MyHomePage>
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Tab(
-                      icon: SimpleAnimatedIcon(
+                    icon: Bouncy(
+                      duration: Duration(milliseconds: 2000),
+                      lift: isIndex0 ? 10 : 0,
+                      ratio: 0.5,
+                      pause: 0.5,
+                      child: SimpleAnimatedIcon(
                         startIcon: Icons.cloud_download_sharp,
                         endIcon: Icons.refresh,
                         progress: _progress,
-                        transitions: [
+                        transitions: const [
                           Transitions.rotate_ccw,
                           Transitions.zoom_in,
                         ],
                       ),
-                      text: "Fetch"),
+                    ),
+                    text: "Fetch",
+                  ),
                 ),
               ),
               Container(
@@ -142,14 +151,20 @@ class _MyHomePageState extends State<MyHomePage>
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Tab(
-                    icon: SimpleAnimatedIcon(
-                      startIcon: Icons.hourglass_empty,
-                      endIcon: Icons.check_circle_outline,
-                      progress: _progress,
-                      transitions: [
-                        Transitions.zoom_in,
-                        Transitions.rotate_ccw
-                      ],
+                    icon: Bouncy(
+                      duration: Duration(milliseconds: 2000),
+                      lift: isIndex0 ? 0 : 10,
+                      ratio: 0.5,
+                      pause: 0.5,
+                      child: SimpleAnimatedIcon(
+                        startIcon: Icons.hourglass_empty,
+                        endIcon: Icons.check_circle_outline,
+                        progress: _progress,
+                        transitions: [
+                          Transitions.zoom_in,
+                          Transitions.rotate_ccw
+                        ],
+                      ),
                     ),
                     text: "Allow",
                   ),

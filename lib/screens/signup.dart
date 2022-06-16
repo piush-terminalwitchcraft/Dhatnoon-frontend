@@ -16,7 +16,7 @@ class SignUp extends StatelessWidget {
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity),
-            FadeInUp(
+          FadeInUp(
             child: Align(
               alignment: Alignment(-0.75, -0.8),
               child: Icon(
@@ -32,10 +32,9 @@ class SignUp extends StatelessWidget {
               child: Text(
                 "Log In",
                 style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.bold
-                ),
+                    fontSize: 13,
+                    color: Colors.grey.shade600,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -66,7 +65,10 @@ class SignUp extends StatelessWidget {
                     minVerticalPadding: 20,
                     title: Text(
                       "User Name",
-                      style: TextStyle(fontSize: 13,color: Colors.grey.shade500,),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade500,
+                      ),
                     ),
                     trailing: Icon(Icons.person_outline),
                   ),
@@ -95,7 +97,10 @@ class SignUp extends StatelessWidget {
                       minVerticalPadding: 20,
                       title: Text(
                         "Phone",
-                        style: TextStyle(fontSize: 13,color: Colors.grey.shade500,),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade500,
+                        ),
                       ),
                       trailing: Icon(Icons.phone_android)),
                   shape: RoundedRectangleBorder(
@@ -123,7 +128,10 @@ class SignUp extends StatelessWidget {
                       minVerticalPadding: 20,
                       title: Text(
                         "E-Mail",
-                        style: TextStyle(fontSize: 13,color: Colors.grey.shade500,),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade500,
+                        ),
                       ),
                       trailing: Icon(Icons.email_outlined)),
                   shape: RoundedRectangleBorder(
@@ -151,7 +159,10 @@ class SignUp extends StatelessWidget {
                       minVerticalPadding: 20,
                       title: Text(
                         "Password",
-                        style: TextStyle(fontSize: 13,color: Colors.grey.shade500,),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade500,
+                        ),
                       ),
                       trailing: Icon(Icons.password_outlined)),
                   shape: RoundedRectangleBorder(
@@ -204,8 +215,8 @@ class SignUp extends StatelessWidget {
               ),
             ),
           ),
-           FadeInUp(
-             delay: Duration(milliseconds: 1150),
+          FadeInUp(
+            delay: Duration(milliseconds: 1150),
             child: Align(
               alignment: Alignment(-0.7, 0.9),
               child: Card(

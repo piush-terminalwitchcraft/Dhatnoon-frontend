@@ -1,5 +1,7 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:components/screens/signup.dart';
 import "package:flutter/material.dart";
+import 'package:get/get.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -25,9 +27,14 @@ class SplashScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Text(
-                "Splash Screen",
-                style: TextStyle(fontSize: 30),
+              child: ElevatedButton(
+                onPressed: () {
+                  Get.to(SignUp(), transition: Transition.downToUp, duration: Duration(milliseconds: 2000));
+                },
+                child: Text(
+                  "Splash Screen",
+                  style: TextStyle(fontSize: 30),
+                ),
               ),
             ),
           ),
