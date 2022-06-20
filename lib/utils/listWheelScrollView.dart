@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
+class ListWheel extends StatefulWidget {
+  ListWheel({Key? key, this.title}) : super(key: key);
 
   final String? title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _ListWheelState createState() => _ListWheelState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ListWheelState extends State<ListWheel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,18 +18,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       backgroundColor: Colors.black,
       body: ListWheelScrollView.useDelegate(
-        itemExtent: 80,
         squeeze: 0.8,
-        perspective: 0.009,
-        // diameterRatio: 1.0,
-        // magnification: 1.5,
-        // overAndUnderCenterOpacity: 1,
-        offAxisFraction: -1.5,
-        // useMagnifier: true,
+        itemExtent: 150,
+        diameterRatio: 3.0,
         physics: const FixedExtentScrollPhysics(),
         onSelectedItemChanged: (i) => print("Changed $i"),
         renderChildrenOutsideViewport: false,
-        //squeeze: 1.5,
         childDelegate: ListWheelChildBuilderDelegate(
           builder: (context, index) {
             return Container(
@@ -51,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Colors.blue.shade100
                 ]),
               ),
-              width: MediaQuery.of(context).size.width - 280,
+              width: MediaQuery.of(context).size.width - 100,
               child: Center(
                 child: ListTile(
                   title: Text(" "),

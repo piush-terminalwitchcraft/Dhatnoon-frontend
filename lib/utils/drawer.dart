@@ -9,10 +9,7 @@ import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class CustomDrawer extends StatefulWidget {
-  const CustomDrawer({Key? key, required this.title}) : super(key: key);
-
-  // Title of the AppBar
-  final String title;
+  const CustomDrawer({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -33,10 +30,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-
       // check if drawer is open or closed
       drawer: VisibilityDetector(
         key: const Key('my-widget-key'),
@@ -46,12 +39,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
           // if drawer not opened then route to specific pages based
           // on the index value
           if (visiblePercentage == 0) {
-            if (index == 0) Get.to(const CustomDrawer(title: "Home Page"));
+            if (index == 0) Get.to(const CustomDrawer());
             if (index == 1) Get.to(const ProfilePage());
             if (index == 2) Get.to(const SplashScreen());
           }
         },
-
         // Actual drawer implementation
         child: CurvedDrawer(
             index: index,
@@ -69,17 +61,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
         ),
 
       // content other than the drawer
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Current index is $index',
-              style: TextStyle(fontSize: 30),
-            ),
-          ],
-        ),
-      ),
+      // body: Center(
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: <Widget>[
+      //       Text(
+      //         'Current index is $index',
+      //         style: TextStyle(fontSize: 30),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

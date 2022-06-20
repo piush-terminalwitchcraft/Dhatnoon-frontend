@@ -2,6 +2,8 @@ import 'package:components/screens/login.dart';
 import 'package:components/screens/signup.dart';
 import 'package:components/screens/splash.dart';
 import 'package:components/utils/drawer.dart';
+import 'package:components/utils/listWheelScrollView.dart';
+import 'package:components/utils/rivetest.dart';
 import 'package:components/utils/smart_accordion.dart';
 import 'package:components/utils/tabBar.dart';
 import 'package:components/utils/timepicker.dart';
@@ -18,10 +20,10 @@ class MyApp extends StatelessWidget {
       title: 'Dhatnoon',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        useMaterial3: true,
+        // useMaterial3: true,
         primarySwatch: Colors.purple,
       ),
-      home: AccordionPage()
+      home: SimpleAnimation()
     );
   }
 }

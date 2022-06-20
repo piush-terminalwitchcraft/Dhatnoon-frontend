@@ -1,7 +1,14 @@
 import 'package:bouncy_widget/bouncy_widget.dart';
+import 'package:components/screens/profile.dart';
+import 'package:components/screens/splash.dart';
+import 'package:components/utils/drawer.dart';
+import 'package:components/utils/smart_accordion.dart';
+import 'package:curved_drawer_fork/curved_drawer_fork.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:simple_animated_icon/simple_animated_icon.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -53,6 +60,16 @@ class _MyHomePageState extends State<MyHomePage>
       _isOpened = !_isOpened;
     });
   }
+  
+   // Initialize index of drawer item
+  int index = 0;
+
+  // list of custom drawer items
+  final List<DrawerItem> _drawerItems = const <DrawerItem>[
+    DrawerItem(icon: Icon(Icons.home_outlined), label: "Home"),
+    DrawerItem(icon: Icon(Icons.person_outline_rounded), label: "Profile"),
+    DrawerItem(icon: Icon(Icons.logout_rounded), label: "Logout"),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +77,37 @@ class _MyHomePageState extends State<MyHomePage>
       length: 2,
       initialIndex: 0,
       child: Scaffold(
-        drawer: Drawer(
-          backgroundColor: Colors.white,
+
+
+        drawer: VisibilityDetector(
+        key: const Key('my-widget-key'),
+        onVisibilityChanged: (visibilityInfo) {
+          var visiblePercentage = visibilityInfo.visibleFraction * 100;
+
+          // if drawer not opened then route to specific pages based
+          // on the index value
+          // if (visiblePercentage == 0) {
+          //   if (index == 0) Get.to(MyHomePage(title: "title"));
+          //   if (index == 1) Get.to(const ProfilePage());
+          //   if (index == 2) Get.to(const SplashScreen());
+          // }
+        },
+        // Actual drawer implementation
+        child: CurvedDrawer(
+            index: index,
+            width: 65,
+            color: Color(0xff250543),
+            buttonBackgroundColor: Color(0xff270745),
+            labelColor: Colors.white,
+            items: _drawerItems,
+            onTap: (newIndex) {
+              setState(() {
+                index = newIndex;
+              });
+            },
+          ),
         ),
+
         appBar: AppBar(
           actions: [Icon(Icons.more_vert_outlined)],
           iconTheme: IconThemeData(color: Colors.white),
@@ -190,14 +235,8 @@ class _MyHomePageState extends State<MyHomePage>
         ),
         body: TabBarView(
           children: [
-            Container(
-              color: Colors.black,
-              child: Text("1"),
-            ),
-            Container(
-              color: Colors.black,
-              child: Text("2"),
-            )
+            AccordionPage(),
+            AccordionPage(),
           ],
         ),
       ),
