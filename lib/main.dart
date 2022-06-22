@@ -3,6 +3,7 @@ import 'package:components/screens/signup.dart';
 import 'package:components/screens/splash.dart';
 import 'package:components/utils/drawer.dart';
 import 'package:components/utils/listWheelScrollView.dart';
+import 'package:components/utils/request.dart';
 import 'package:components/utils/rivetest.dart';
 import 'package:components/utils/smart_accordion.dart';
 import 'package:components/utils/tabBar.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         // useMaterial3: true,
         primarySwatch: Colors.purple,
       ),
-      home: SimpleAnimation()
+      home: SignUp()
     );
   }
 }

@@ -1,14 +1,22 @@
 import 'package:bouncy_widget/bouncy_widget.dart';
+import 'package:components/screens/login.dart';
 import 'package:components/screens/profile.dart';
+import 'package:components/screens/signup.dart';
 import 'package:components/screens/splash.dart';
 import 'package:components/utils/drawer.dart';
+import 'package:components/utils/listWheelScrollView.dart';
+import 'package:components/utils/request.dart';
 import 'package:components/utils/smart_accordion.dart';
+import 'package:components/utils/timepicker.dart';
 import 'package:curved_drawer_fork/curved_drawer_fork.dart';
+import 'package:day_night_time_picker/day_night_time_picker.dart';
+import 'package:day_night_time_picker/lib/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:simple_animated_icon/simple_animated_icon.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:popup_card/popup_card.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -26,6 +34,14 @@ class _MyHomePageState extends State<MyHomePage>
   late Animation<double> _progress;
 
   bool isIndex0 = true;
+
+  TimeOfDay _time = TimeOfDay.now().replacing(hour: 11, minute: 30);
+
+  void onTimeChanged(TimeOfDay newTime) {
+    setState(() {
+      _time = newTime;
+    });
+  }
 
   @override
   void initState() {
@@ -60,8 +76,8 @@ class _MyHomePageState extends State<MyHomePage>
       _isOpened = !_isOpened;
     });
   }
-  
-   // Initialize index of drawer item
+
+  // Initialize index of drawer item
   int index = 0;
 
   // list of custom drawer items
@@ -77,27 +93,25 @@ class _MyHomePageState extends State<MyHomePage>
       length: 2,
       initialIndex: 0,
       child: Scaffold(
-
-
         drawer: VisibilityDetector(
-        key: const Key('my-widget-key'),
-        onVisibilityChanged: (visibilityInfo) {
-          var visiblePercentage = visibilityInfo.visibleFraction * 100;
+          key: const Key('my-widget-key'),
+          onVisibilityChanged: (visibilityInfo) {
+            var visiblePercentage = visibilityInfo.visibleFraction * 100;
 
-          // if drawer not opened then route to specific pages based
-          // on the index value
-          // if (visiblePercentage == 0) {
-          //   if (index == 0) Get.to(MyHomePage(title: "title"));
-          //   if (index == 1) Get.to(const ProfilePage());
-          //   if (index == 2) Get.to(const SplashScreen());
-          // }
-        },
-        // Actual drawer implementation
-        child: CurvedDrawer(
+            // if drawer not opened then route to specific pages based
+            // on the index value
+            // if (visiblePercentage == 0) {
+            //   if (index == 0) Get.to(MyHomePage(title: "title"));
+            //   if (index == 1) Get.to(const ProfilePage());
+            //   if (index == 2) Get.to(const SplashScreen());
+            // }
+          },
+          // Actual drawer implementation
+          child: CurvedDrawer(
             index: index,
             width: 65,
-            color: Color(0xff250543),
-            buttonBackgroundColor: Color(0xff270745),
+            color: Colors.purple.shade200,
+            buttonBackgroundColor: Color(0xff831d8a),
             labelColor: Colors.white,
             items: _drawerItems,
             onTap: (newIndex) {
@@ -107,21 +121,117 @@ class _MyHomePageState extends State<MyHomePage>
             },
           ),
         ),
-
         appBar: AppBar(
-          actions: [Icon(Icons.more_vert_outlined)],
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Get.defaultDialog(
+                  title: "Request",
+                  textConfirm: "Send",
+                  confirmTextColor: Colors.white,
+                  textCancel: "Back",
+                  content: Column(
+                    children: [
+                      SizedBox(
+                        width: 250,
+                        height: 40,
+                        child: TextField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              hintStyle: TextStyle(color: Colors.grey[500]),
+                              hintText: "Phone number",
+                              fillColor: Colors.white70),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      InkWell(
+                        onTap: () => Get.to(ListWheel()),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          elevation: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
+                            child: Text("Select your choice"),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            showPicker(
+                              elevation: 20,
+                              blurredBackground: true,
+                              borderRadius: 50,
+                              context: context,
+                              value: _time,
+                              onChange: onTimeChanged,
+                              minuteInterval: MinuteInterval.FIVE,
+                              onChangeDateTime: (DateTime dateTime) {},
+                            ),
+                          );
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          elevation: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(80, 8, 80, 8),
+                            child: Text("Select time"),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.arrow_circle_right_outlined,
+                size: 26.0,
+              ),
+            ),
+            PopupMenuButton<String>(itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  child: ListTile(
+                    title: Text("Settings   "),
+                    trailing: Icon(Icons.settings),
+                  ),
+                ),
+                PopupMenuItem(
+                  child: InkWell(
+                    onTap: ()=> Get.off(LogIn(), transition: Transition.downToUp),
+                    child: ListTile(
+                      title: Text("Log Out"),
+                      trailing: Icon(Icons.logout_outlined),
+                    ),
+                  ),
+                ),
+              ];
+            }),
+          ],
           iconTheme: IconThemeData(color: Colors.white),
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              Color(0xff270745),
-              Color(0xff250543),
-              Color(0xff170036),
-              Color(0xff120032),
-              Color(0xff120032),
-            ])),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xff270745),
+                  Color(0xff250543),
+                  Color(0xff170036),
+                  Color(0xff120032),
+                  Color(0xff120032),
+                ],
+              ),
+            ),
           ),
-          toolbarHeight: 75,
+          toolbarHeight: 90,
           titleTextStyle: TextStyle(fontSize: 20, color: Colors.white),
           bottom: TabBar(
             onTap: (value) {
@@ -147,10 +257,10 @@ class _MyHomePageState extends State<MyHomePage>
                       spreadRadius: 1,
                     ),
                     BoxShadow(
-                      color: isIndex0 ? Colors.black : Colors.transparent,
-                      offset: Offset(0.0, 120),
+                      color: isIndex0 ? Color(0xffcfd8dc) : Colors.transparent,
+                      offset: Offset(0.0, 130),
                       blurRadius: 7,
-                      spreadRadius: 35,
+                      spreadRadius: 43,
                     ),
                   ],
                 ),
@@ -186,10 +296,10 @@ class _MyHomePageState extends State<MyHomePage>
                       spreadRadius: 1,
                     ),
                     BoxShadow(
-                      color: isIndex0 ? Colors.transparent : Colors.black,
-                      offset: Offset(0.0, 120),
+                      color: isIndex0 ? Colors.transparent : Color(0xffcfd8dc),
+                      offset: Offset(0.0, 130),
                       blurRadius: 7,
-                      spreadRadius: 35,
+                      spreadRadius: 43,
                     ),
                   ],
                 ),
@@ -236,7 +346,7 @@ class _MyHomePageState extends State<MyHomePage>
         body: TabBarView(
           children: [
             AccordionPage(),
-            AccordionPage(),
+            AccordionPage1(),
           ],
         ),
       ),
