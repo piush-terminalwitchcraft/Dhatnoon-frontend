@@ -45,16 +45,25 @@ class LogIn extends StatelessWidget {
             ),
             FadeInUp(
               child: Align(
-                alignment: Alignment(0.75, -0.8),
+                alignment: Alignment(0.75, -0.81),
                 child: InkWell(
                   onTap: () =>
                       Get.to(SignUp(), transition: Transition.downToUp),
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade600,
-                        fontWeight: FontWeight.bold),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    color: Colors.grey.shade600,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff120032),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -133,14 +142,16 @@ class LogIn extends StatelessWidget {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () => Get.to(MyHomePage(title: "title"),
-                  transition: Transition.fadeIn),
-              child: FadeInUp(
-                duration: Duration(milliseconds: 500),
-                delay: Duration(milliseconds: 1000),
-                child: Align(
-                  alignment: Alignment(0.0, 0.15),
+            FadeInUp(
+              duration: Duration(milliseconds: 500),
+              delay: Duration(milliseconds: 1000),
+              child: Align(
+                alignment: Alignment(0.0, 0.15),
+                child: InkWell(
+                  onTap: (){
+                    Get.to(MyHomePage(title: "title"),
+                        transition: Transition.leftToRightWithFade);
+                  },
                   child: Card(
                     color: Colors.transparent,
                     child: Container(

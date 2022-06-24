@@ -43,8 +43,7 @@ dependencies:
   simple_animated_icon: ^1.1.0
   bouncy_widget: ^2.0.1
   accordion: ^2.4.0
-  rive:
-  popup_card: ^0.1.0
+  clickable_list_wheel_view: ^0.1.0
 
 dev_dependencies:
   flutter_test:

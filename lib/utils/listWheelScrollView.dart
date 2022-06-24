@@ -1,3 +1,4 @@
+import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
 import 'package:flutter/material.dart';
 
 class ListWheel extends StatefulWidget {
@@ -10,6 +11,10 @@ class ListWheel extends StatefulWidget {
 }
 
 class _ListWheelState extends State<ListWheel> {
+  final _scrollController = FixedExtentScrollController();
+  static const double _itemHeight = 100;
+  static const int _itemCount = 8;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,25 +36,36 @@ class _ListWheelState extends State<ListWheel> {
         centerTitle: true,
       ),
       backgroundColor: Color(0xffcfd8dc),
-      body: ListWheelScrollView.useDelegate(
-        squeeze: 0.8,
-        itemExtent: 100,
-        diameterRatio: 3.0,
-        physics: const FixedExtentScrollPhysics(),
-        onSelectedItemChanged: (i) => print("Changed $i"),
-        renderChildrenOutsideViewport: false,
-        childDelegate: ListWheelChildBuilderDelegate(
-          builder: (context, index) {
-            return Container(
-              decoration: BoxDecoration(
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0xff270745),
-                    offset: Offset(0, 10),
-                    blurRadius: 10,
-                    spreadRadius: 0.5,
-                  ),
-                ],
+      body: ClickableListWheelScrollView(
+        scrollController: _scrollController,
+        itemHeight: _itemHeight,
+        itemCount: _itemCount,
+        onItemTapCallback: (index) {},
+        child: ListWheelScrollView.useDelegate(
+          squeeze: 0.8,
+          itemExtent: _itemHeight,
+          controller: _scrollController,
+          physics: FixedExtentScrollPhysics(),
+          childDelegate: ListWheelChildBuilderDelegate(
+            builder: (context, index) => _child(index),
+            childCount: _itemCount,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _child(int index) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+      child: Card(
+        shadowColor: Color.fromARGB(255, 90, 26, 150),
+        elevation: 20,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(20)),
                 gradient: LinearGradient(colors: [
                   Color(0xff270745),
@@ -59,18 +75,15 @@ class _ListWheelState extends State<ListWheel> {
                   Color(0xff120032),
                 ]),
               ),
-              width: MediaQuery.of(context).size.width - 100,
-              child: Center(
-                child: ListTile(
-                  title: Text(
-                    _items[index],
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  leading: _icons[index],
-                ),
+          child: Center(
+            child: ListTile(
+              title: Text(
+                _items[index],
+                style: TextStyle(color: Colors.white),
               ),
-            );
-          },
+              leading: _icons[index],
+            ),
+          ),
         ),
       ),
     );

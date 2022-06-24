@@ -16,7 +16,6 @@ import 'package:get/get.dart';
 import 'package:simple_animated_icon/simple_animated_icon.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:popup_card/popup_card.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -107,18 +106,20 @@ class _MyHomePageState extends State<MyHomePage>
             // }
           },
           // Actual drawer implementation
-          child: CurvedDrawer(
-            index: index,
-            width: 65,
-            color: Colors.purple.shade200,
-            buttonBackgroundColor: Color(0xff831d8a),
-            labelColor: Colors.white,
-            items: _drawerItems,
-            onTap: (newIndex) {
-              setState(() {
-                index = newIndex;
-              });
-            },
+          child: Container(
+            child: CurvedDrawer(
+              index: index,
+              width: 65,
+              color: Color.fromARGB(255, 69, 3, 130),
+              buttonBackgroundColor: Color(0xff831d8a),
+              labelColor: Colors.white,
+              items: _drawerItems,
+              onTap: (newIndex) {
+                setState(() {
+                  index = newIndex;
+                });
+              },
+            ),
           ),
         ),
         appBar: AppBar(
@@ -137,13 +138,14 @@ class _MyHomePageState extends State<MyHomePage>
                         height: 40,
                         child: TextField(
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              filled: true,
-                              hintStyle: TextStyle(color: Colors.grey[500]),
-                              hintText: "Phone number",
-                              fillColor: Colors.white70),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            hintStyle: TextStyle(color: Colors.grey[500]),
+                            hintText: "Phone number",
+                            fillColor: Colors.white70,
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -182,8 +184,35 @@ class _MyHomePageState extends State<MyHomePage>
                           ),
                           elevation: 10,
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(80, 8, 80, 8),
-                            child: Text("Select time"),
+                            padding: const EdgeInsets.fromLTRB(57, 8, 57, 8),
+                            child: Text("Select start time"),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            showPicker(
+                              elevation: 20,
+                              blurredBackground: true,
+                              borderRadius: 50,
+                              context: context,
+                              value: _time,
+                              onChange: onTimeChanged,
+                              minuteInterval: MinuteInterval.FIVE,
+                              onChangeDateTime: (DateTime dateTime) {},
+                            ),
+                          );
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          elevation: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(60, 8, 60, 8),
+                            child: Text("Select end time"),
                           ),
                         ),
                       ),
@@ -193,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage>
                 );
               },
               child: Icon(
-                Icons.arrow_circle_right_outlined,
+                Icons.send_and_archive_outlined,
                 size: 26.0,
               ),
             ),
@@ -207,7 +236,8 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
                 PopupMenuItem(
                   child: InkWell(
-                    onTap: ()=> Get.off(LogIn(), transition: Transition.downToUp),
+                    onTap: () =>
+                        Get.off(LogIn(), transition: Transition.downToUp),
                     child: ListTile(
                       title: Text("Log Out"),
                       trailing: Icon(Icons.logout_outlined),
