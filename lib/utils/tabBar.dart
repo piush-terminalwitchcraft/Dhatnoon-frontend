@@ -1,13 +1,9 @@
 import 'package:bouncy_widget/bouncy_widget.dart';
 import 'package:components/screens/login.dart';
 import 'package:components/screens/profile.dart';
-import 'package:components/screens/signup.dart';
-import 'package:components/screens/splash.dart';
-import 'package:components/utils/drawer.dart';
+import 'package:components/screens/settings.dart';
 import 'package:components/utils/listWheelScrollView.dart';
-import 'package:components/utils/request.dart';
 import 'package:components/utils/smart_accordion.dart';
-import 'package:components/utils/timepicker.dart';
 import 'package:curved_drawer_fork/curved_drawer_fork.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:day_night_time_picker/lib/constants.dart';
@@ -27,13 +23,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   bool _isOpened = false;
+
+  // for tabs
   late AnimationController _animationController;
   late Animation<double> _progress;
 
-  bool isIndex0 = true;
+  // for hover effect
+  late final AnimationController _hoverController = AnimationController(vsync: this, duration: Duration(milliseconds: 1250))..repeat(reverse: true);
+  late Animation<Offset> _hoverAnimation = Tween(
+    begin: Offset.zero,
+    end: Offset(0, 0.125)
+  ).animate(_hoverController);
 
+  bool isIndex0 = true;
   TimeOfDay _time = TimeOfDay.now().replacing(hour: 11, minute: 30);
 
   void onTimeChanged(TimeOfDay newTime) {
@@ -99,11 +103,11 @@ class _MyHomePageState extends State<MyHomePage>
 
             // if drawer not opened then route to specific pages based
             // on the index value
-            // if (visiblePercentage == 0) {
-            //   if (index == 0) Get.to(MyHomePage(title: "title"));
-            //   if (index == 1) Get.to(const ProfilePage());
-            //   if (index == 2) Get.to(const SplashScreen());
-            // }
+            if (visiblePercentage == 0) {
+              if (index == 0) Get.to(MyHomePage(title: "title"));
+              if (index == 1) Get.to(const ProfilePage());
+              if (index == 2) Get.to(const LogIn());
+            }
           },
           // Actual drawer implementation
           child: Container(
@@ -221,17 +225,37 @@ class _MyHomePageState extends State<MyHomePage>
                   ),
                 );
               },
-              child: Icon(
-                Icons.send_and_archive_outlined,
-                size: 26.0,
+              child: SlideTransition(
+                position: _hoverAnimation,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xffd33361),
+                        offset: Offset(0.0, 0),
+                        blurRadius: 15,
+                        spreadRadius: 5,
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                  Icons.send_and_archive_outlined,
+                  size: 26.0,
+                  color: Colors.white,
+                  ),
+                ),
               ),
             ),
             PopupMenuButton<String>(itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem(
-                  child: ListTile(
-                    title: Text("Settings   "),
-                    trailing: Icon(Icons.settings),
+                  child: InkWell(
+                    onTap: ()=> Get.to(SettingsPage()),
+                    child: ListTile(
+                      title: Text("Settings   "),
+                      trailing: Icon(Icons.settings),
+                    ),
                   ),
                 ),
                 PopupMenuItem(

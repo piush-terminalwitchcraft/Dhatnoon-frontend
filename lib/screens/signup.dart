@@ -69,10 +69,9 @@ class SignUp extends StatelessWidget {
                 child: Text(
                   "Create\nAccount",
                   style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white
-                  ),
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ),
             ),
@@ -87,16 +86,33 @@ class SignUp extends StatelessWidget {
                   height: 80,
                   child: Card(
                     elevation: 10,
-                    child: ListTile(
-                      minVerticalPadding: 20,
-                      title: Text(
-                        "User Name",
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey.shade500,
+                    child: Stack(
+                      children: [
+                        ListTile(
+                          minVerticalPadding: 20,
+                          trailing: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Icon(Icons.person_outline),
+                          ),
                         ),
-                      ),
-                      trailing: Icon(Icons.person_outline),
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            hintStyle: TextStyle(
+                              color: Colors.grey[500],
+                              fontSize: 13,
+                            ),
+                            hintText: "User Name",
+                            fillColor: Colors.transparent,
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 44),
+                          ),
+                          keyboardType: TextInputType.name,
+                        ),
+                      ],
                     ),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(color: Colors.white70, width: 1),
@@ -119,16 +135,34 @@ class SignUp extends StatelessWidget {
                   child: Card(
                     elevation: 10,
                     borderOnForeground: false,
-                    child: ListTile(
-                        minVerticalPadding: 20,
-                        title: Text(
-                          "Phone",
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey.shade500,
+                    child: Stack(
+                      children: [
+                        ListTile(
+                          minVerticalPadding: 20,
+                          trailing: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Icon(Icons.phone_android),
                           ),
                         ),
-                        trailing: Icon(Icons.phone_android)),
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            hintStyle: TextStyle(
+                              color: Colors.grey[500],
+                              fontSize: 13,
+                            ),
+                            hintText: "Phone",
+                            fillColor: Colors.transparent,
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 44),
+                          ),
+                          keyboardType: TextInputType.phone,
+                        ),
+                      ],
+                    ),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(color: Colors.white70, width: 1),
                       borderRadius: BorderRadius.circular(10),
@@ -150,16 +184,34 @@ class SignUp extends StatelessWidget {
                   child: Card(
                     elevation: 10,
                     borderOnForeground: false,
-                    child: ListTile(
-                        minVerticalPadding: 20,
-                        title: Text(
-                          "E-Mail",
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey.shade500,
+                    child: Stack(
+                      children: [
+                        ListTile(
+                          minVerticalPadding: 20,
+                          trailing: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Icon(Icons.email_outlined),
                           ),
                         ),
-                        trailing: Icon(Icons.email_outlined)),
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            hintStyle: TextStyle(
+                              color: Colors.grey[500],
+                              fontSize: 13,
+                            ),
+                            hintText: "E-Mail",
+                            fillColor: Colors.transparent,
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 44),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                      ],
+                    ),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(color: Colors.white70, width: 1),
                       borderRadius: BorderRadius.circular(10),
@@ -181,16 +233,34 @@ class SignUp extends StatelessWidget {
                   child: Card(
                     elevation: 10,
                     borderOnForeground: false,
-                    child: ListTile(
-                        minVerticalPadding: 20,
-                        title: Text(
-                          "Password",
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey.shade500,
-                          ),
+                    child: Stack(
+                      children: [
+                        ListTile(
+                          minVerticalPadding: 20,
+                          trailing: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Icon(Icons.password_outlined),
+                          )
                         ),
-                        trailing: Icon(Icons.password_outlined)),
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            hintStyle: TextStyle(
+                              color: Colors.grey[500],
+                              fontSize: 13,
+                            ),
+                            hintText: "Password",
+                            fillColor: Colors.transparent,
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 44),
+                          ),
+                          keyboardType: TextInputType.visiblePassword,
+                        ),
+                      ],
+                    ),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(color: Colors.white70, width: 1),
                       borderRadius: BorderRadius.circular(10),
@@ -246,10 +316,7 @@ class SignUp extends StatelessWidget {
                 alignment: Alignment(0.0, 0.65),
                 child: Text(
                   "Or continue with",
-                  style: TextStyle(
-                    fontSize: 13,
-                     color: Colors.white
-                  ),
+                  style: TextStyle(fontSize: 13, color: Colors.white),
                 ),
               ),
             ),

@@ -91,16 +91,33 @@ class LogIn extends StatelessWidget {
                   height: 80,
                   child: Card(
                     elevation: 10,
-                    child: ListTile(
-                      minVerticalPadding: 20,
-                      title: Text(
-                        "User Name",
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey.shade500,
+                    child: Stack(
+                      children: [
+                        ListTile(
+                          minVerticalPadding: 20,
+                          trailing: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Icon(Icons.person_outline),
+                          ),
                         ),
-                      ),
-                      trailing: Icon(Icons.person_outline),
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            hintStyle: TextStyle(
+                              color: Colors.grey[500],
+                              fontSize: 13,
+                            ),
+                            hintText: "User Name",
+                            fillColor: Colors.transparent,
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 44),
+                          ),
+                          keyboardType: TextInputType.name,
+                        ),
+                      ],
                     ),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(color: Colors.white70, width: 1),
@@ -123,16 +140,34 @@ class LogIn extends StatelessWidget {
                   child: Card(
                     elevation: 10,
                     borderOnForeground: false,
-                    child: ListTile(
-                        minVerticalPadding: 20,
-                        title: Text(
-                          "Phone",
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey.shade500,
+                    child: Stack(
+                      children: [
+                        ListTile(
+                          minVerticalPadding: 20,
+                          trailing: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Icon(Icons.email_outlined),
                           ),
                         ),
-                        trailing: Icon(Icons.phone_android)),
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            hintStyle: TextStyle(
+                              color: Colors.grey[500],
+                              fontSize: 13,
+                            ),
+                            hintText: "E-Mail",
+                            fillColor: Colors.transparent,
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 44),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                      ],
+                    ),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(color: Colors.white70, width: 1),
                       borderRadius: BorderRadius.circular(10),
@@ -148,7 +183,7 @@ class LogIn extends StatelessWidget {
               child: Align(
                 alignment: Alignment(0.0, 0.15),
                 child: InkWell(
-                  onTap: (){
+                  onTap: () {
                     Get.to(MyHomePage(title: "title"),
                         transition: Transition.leftToRightWithFade);
                   },
