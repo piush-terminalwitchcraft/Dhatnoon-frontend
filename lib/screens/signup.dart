@@ -1,18 +1,29 @@
-// dummy SignUp page
-
 import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:components/main.dart';
 import 'package:components/screens/login.dart';
 import 'package:components/utils/tabBar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
             Color(0xff270745),
@@ -65,7 +76,7 @@ class SignUp extends StatelessWidget {
             ),
             FadeInUp(
               child: Align(
-                alignment: Alignment(-0.55, -0.55),
+                alignment: Alignment(-0.55, -0.63),
                 child: Text(
                   "Create\nAccount",
                   style: TextStyle(
@@ -79,7 +90,7 @@ class SignUp extends StatelessWidget {
               duration: Duration(milliseconds: 500),
               // delay: Duration(milliseconds: 1000),
               child: Align(
-                alignment: Alignment(0.0, -0.22),
+                alignment: Alignment(0.0, -0.328),
                 child: Container(
                   alignment: Alignment.center,
                   width: 320,
@@ -96,6 +107,7 @@ class SignUp extends StatelessWidget {
                           ),
                         ),
                         TextField(
+                          controller: _usernameController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -127,7 +139,7 @@ class SignUp extends StatelessWidget {
               duration: Duration(milliseconds: 500),
               delay: Duration(milliseconds: 700),
               child: Align(
-                alignment: Alignment(0.0, -0.035),
+                alignment: Alignment(0.0, -0.14),
                 child: Container(
                   alignment: Alignment.center,
                   width: 320,
@@ -145,6 +157,7 @@ class SignUp extends StatelessWidget {
                           ),
                         ),
                         TextField(
+                          controller: _phoneController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -176,7 +189,7 @@ class SignUp extends StatelessWidget {
               duration: Duration(milliseconds: 500),
               delay: Duration(milliseconds: 700),
               child: Align(
-                alignment: Alignment(0.0, 0.15),
+                alignment: Alignment(0.0, 0.045),
                 child: Container(
                   alignment: Alignment.center,
                   width: 320,
@@ -194,6 +207,7 @@ class SignUp extends StatelessWidget {
                           ),
                         ),
                         TextField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -225,7 +239,7 @@ class SignUp extends StatelessWidget {
               duration: Duration(milliseconds: 500),
               delay: Duration(milliseconds: 700),
               child: Align(
-                alignment: Alignment(0.0, 0.34),
+                alignment: Alignment(0.0, 0.23),
                 child: Container(
                   alignment: Alignment.center,
                   width: 320,
@@ -236,13 +250,13 @@ class SignUp extends StatelessWidget {
                     child: Stack(
                       children: [
                         ListTile(
-                          minVerticalPadding: 20,
-                          trailing: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            child: Icon(Icons.password_outlined),
-                          )
-                        ),
+                            minVerticalPadding: 20,
+                            trailing: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              child: Icon(Icons.password_outlined),
+                            )),
                         TextField(
+                          controller: _passwordController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -274,10 +288,11 @@ class SignUp extends StatelessWidget {
               duration: Duration(milliseconds: 500),
               delay: Duration(milliseconds: 1000),
               child: Align(
-                alignment: Alignment(0.0, 0.53),
+                alignment: Alignment(0.0, 0.43),
                 child: InkWell(
-                  onTap: () => Get.to(MyHomePage(title: "title"),
-                      transition: Transition.leftToRightWithFade),
+                  onTap: () => {
+                    signUp(),
+                  },
                   child: Card(
                     color: Colors.transparent,
                     child: Container(
@@ -313,7 +328,7 @@ class SignUp extends StatelessWidget {
             FadeInUp(
               delay: Duration(milliseconds: 1100),
               child: Align(
-                alignment: Alignment(0.0, 0.65),
+                alignment: Alignment(0.0, 0.58),
                 child: Text(
                   "Or continue with",
                   style: TextStyle(fontSize: 13, color: Colors.white),
@@ -323,7 +338,7 @@ class SignUp extends StatelessWidget {
             FadeInUp(
               delay: Duration(milliseconds: 1150),
               child: Align(
-                alignment: Alignment(-0.7, 0.85),
+                alignment: Alignment(-0.7, 0.80),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -345,7 +360,7 @@ class SignUp extends StatelessWidget {
             FadeInUp(
               delay: Duration(milliseconds: 1200),
               child: Align(
-                alignment: Alignment(0.7, 0.85),
+                alignment: Alignment(0.7, 0.80),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -368,5 +383,28 @@ class SignUp extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future signUp() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+    try {
+      FirebaseFirestore.instance.collection('userData').add({
+        'username': _usernameController.text.trim(),
+        'phone': _phoneController.text.trim()
+      });
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+    }
+
+    navigatorkey.currentState!.popUntil((route) => route.isFirst);
   }
 }

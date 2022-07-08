@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "694755082868",
+    "project_id": "dhatnoon-backend",
+    "storage_bucket": "dhatnoon-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694755082868:android:3ff3fe5c5ebc21752f0721",
+        "android_client_info": {
+          "package_name": "com.example.components"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694755082868-mhdiksc6vcguirkn35vtag0vuejohvoa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkDWlnoMrYE8sLX-hfUdNNNZjJ6Sc-5xU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694755082868-mhdiksc6vcguirkn35vtag0vuejohvoa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

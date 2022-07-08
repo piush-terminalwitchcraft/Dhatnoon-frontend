@@ -7,6 +7,7 @@ import 'package:components/utils/smart_accordion.dart';
 import 'package:curved_drawer_fork/curved_drawer_fork.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:day_night_time_picker/lib/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:simple_animated_icon/simple_animated_icon.dart';
@@ -14,16 +15,15 @@ import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
-    with TickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  final _user = FirebaseAuth.instance.currentUser!;
+
   bool _isOpened = false;
 
   // for tabs
@@ -31,11 +31,11 @@ class _MyHomePageState extends State<MyHomePage>
   late Animation<double> _progress;
 
   // for hover effect
-  late final AnimationController _hoverController = AnimationController(vsync: this, duration: Duration(milliseconds: 1250))..repeat(reverse: true);
-  late Animation<Offset> _hoverAnimation = Tween(
-    begin: Offset.zero,
-    end: Offset(0, 0.125)
-  ).animate(_hoverController);
+  late final AnimationController _hoverController =
+      AnimationController(vsync: this, duration: Duration(milliseconds: 1250))
+        ..repeat(reverse: true);
+  late Animation<Offset> _hoverAnimation =
+      Tween(begin: Offset.zero, end: Offset(0, 0.02)).animate(_hoverController);
 
   bool isIndex0 = true;
   TimeOfDay _time = TimeOfDay.now().replacing(hour: 11, minute: 30);
@@ -92,318 +92,353 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      initialIndex: 0,
-      child: Scaffold(
-        drawer: VisibilityDetector(
-          key: const Key('my-widget-key'),
-          onVisibilityChanged: (visibilityInfo) {
-            var visiblePercentage = visibilityInfo.visibleFraction * 100;
+    return Stack(children: [
+      DefaultTabController(
+        length: 3,
+        initialIndex: 1,
+        child: Scaffold(
+          drawer: VisibilityDetector(
+            key: const Key('my-widget-key'),
+            onVisibilityChanged: (visibilityInfo) {
+              var visiblePercentage = visibilityInfo.visibleFraction * 100;
 
-            // if drawer not opened then route to specific pages based
-            // on the index value
-            if (visiblePercentage == 0) {
-              if (index == 0) Get.to(MyHomePage(title: "title"));
-              if (index == 1) Get.to(const ProfilePage());
-              if (index == 2) Get.to(const LogIn());
-            }
-          },
-          // Actual drawer implementation
-          child: Container(
-            child: CurvedDrawer(
-              index: index,
-              width: 65,
-              color: Color.fromARGB(255, 69, 3, 130),
-              buttonBackgroundColor: Color(0xff831d8a),
-              labelColor: Colors.white,
-              items: _drawerItems,
-              onTap: (newIndex) {
-                setState(() {
-                  index = newIndex;
-                });
-              },
+              // if drawer not opened then route to specific pages based
+              // on the index value
+              if (visiblePercentage == 0) {
+                if (index == 0) Get.to(MyHomePage());
+                if (index == 1) Get.to(const ProfilePage());
+                if (index == 2) Get.to(const LogIn());
+              }
+            },
+            // Actual drawer implementation
+            child: Container(
+              child: CurvedDrawer(
+                index: index,
+                width: 65,
+                color: Color.fromARGB(255, 69, 3, 130),
+                buttonBackgroundColor: Color(0xff831d8a),
+                labelColor: Colors.white,
+                items: _drawerItems,
+                onTap: (newIndex) {
+                  setState(() {
+                    index = newIndex;
+                  });
+                },
+              ),
             ),
           ),
-        ),
-        appBar: AppBar(
-          actions: [
-            GestureDetector(
-              onTap: () {
-                Get.defaultDialog(
-                  title: "Request",
-                  textConfirm: "Send",
-                  confirmTextColor: Colors.white,
-                  textCancel: "Back",
-                  content: Column(
-                    children: [
-                      SizedBox(
-                        width: 250,
-                        height: 40,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            filled: true,
-                            hintStyle: TextStyle(color: Colors.grey[500]),
-                            hintText: "Phone number",
-                            fillColor: Colors.white70,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      InkWell(
-                        onTap: () => Get.to(ListWheel()),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          elevation: 10,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
-                            child: Text("Select your choice"),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            showPicker(
-                              elevation: 20,
-                              blurredBackground: true,
-                              borderRadius: 50,
-                              context: context,
-                              value: _time,
-                              onChange: onTimeChanged,
-                              minuteInterval: MinuteInterval.FIVE,
-                              onChangeDateTime: (DateTime dateTime) {},
-                            ),
-                          );
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          elevation: 10,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(57, 8, 57, 8),
-                            child: Text("Select start time"),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            showPicker(
-                              elevation: 20,
-                              blurredBackground: true,
-                              borderRadius: 50,
-                              context: context,
-                              value: _time,
-                              onChange: onTimeChanged,
-                              minuteInterval: MinuteInterval.FIVE,
-                              onChangeDateTime: (DateTime dateTime) {},
-                            ),
-                          );
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          elevation: 10,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(60, 8, 60, 8),
-                            child: Text("Select end time"),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                    ],
+          appBar: AppBar(
+            actions: [
+              PopupMenuButton<String>(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
                   ),
-                );
-              },
-              child: SlideTransition(
-                position: _hoverAnimation,
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0xffd33361),
-                        offset: Offset(0.0, 0),
-                        blurRadius: 15,
-                        spreadRadius: 5,
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem(
+                        child: InkWell(
+                          onTap: () => Get.to(SettingsPage()),
+                          child: const ListTile(
+                            title: Text("Settings   "),
+                            trailing: Icon(Icons.settings),
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                  child: Icon(
-                  Icons.send_and_archive_outlined,
-                  size: 26.0,
-                  color: Colors.white,
-                  ),
+                      PopupMenuItem(
+                        child: InkWell(
+                          onTap: () => FirebaseAuth.instance.signOut(),
+                          child: const ListTile(
+                            title: Text("Log Out"),
+                            trailing: Icon(Icons.logout_outlined),
+                          ),
+                        ),
+                      ),
+                    ];
+                  }),
+            ],
+            iconTheme: IconThemeData(color: Colors.white),
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xff270745),
+                    Color(0xff250543),
+                    Color(0xff170036),
+                    Color(0xff120032),
+                    Color(0xff120032),
+                  ],
                 ),
               ),
             ),
-            PopupMenuButton<String>(itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  child: InkWell(
-                    onTap: ()=> Get.to(SettingsPage()),
-                    child: ListTile(
-                      title: Text("Settings   "),
-                      trailing: Icon(Icons.settings),
+            toolbarHeight: 90,
+            titleTextStyle: TextStyle(fontSize: 15, color: Colors.white), // fontsize should be 20
+            bottom: TabBar(
+              // padding: EdgeInsets.symmetric(horizontal: 120),
+              onTap: (value) {
+                if (value == 0) {
+                  setState(() {
+                    isIndex0 = true;
+                  });
+                } else {
+                  setState(() {
+                    isIndex0 = false;
+                  });
+                }
+                animate();
+              },
+              tabs: [
+                Visibility(
+                  visible: false,
+                  child: Tab(
+                    text: "request",
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            isIndex0 ? Color(0xffd33361) : Colors.transparent,
+                        offset: Offset(0.0, 65),
+                        blurRadius: 40,
+                        spreadRadius: 1,
+                      ),
+                      BoxShadow(
+                        color:
+                            isIndex0 ? Color(0xffcfd8dc) : Colors.transparent,
+                        offset: Offset(0.0, 130),
+                        blurRadius: 7,
+                        spreadRadius: 43,
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Tab(
+                      icon: Bouncy(
+                        duration: Duration(milliseconds: 2000),
+                        lift: isIndex0 ? 10 : 0,
+                        ratio: 0.5,
+                        pause: 0.5,
+                        child: SimpleAnimatedIcon(
+                          startIcon: Icons.cloud_download_sharp,
+                          endIcon: Icons.refresh,
+                          progress: _progress,
+                          transitions: const [
+                            Transitions.rotate_ccw,
+                            Transitions.zoom_in,
+                          ],
+                        ),
+                      ),
+                      text: "Fetch",
                     ),
                   ),
                 ),
-                PopupMenuItem(
-                  child: InkWell(
-                    onTap: () =>
-                        Get.off(LogIn(), transition: Transition.downToUp),
-                    child: ListTile(
-                      title: Text("Log Out"),
-                      trailing: Icon(Icons.logout_outlined),
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            isIndex0 ? Colors.transparent : Color(0xffd33361),
+                        offset: Offset(0.0, 65),
+                        blurRadius: 40,
+                        spreadRadius: 1,
+                      ),
+                      BoxShadow(
+                        color:
+                            isIndex0 ? Colors.transparent : Color(0xffcfd8dc),
+                        offset: Offset(0.0, 130),
+                        blurRadius: 7,
+                        spreadRadius: 43,
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Tab(
+                      icon: Bouncy(
+                        duration: Duration(milliseconds: 2000),
+                        lift: isIndex0 ? 0 : 10,
+                        ratio: 0.5,
+                        pause: 0.5,
+                        child: SimpleAnimatedIcon(
+                          startIcon: Icons.hourglass_empty,
+                          endIcon: Icons.check_circle_outline,
+                          progress: _progress,
+                          transitions: [
+                            Transitions.zoom_in,
+                            Transitions.rotate_ccw
+                          ],
+                        ),
+                      ),
+                      text: "Allow",
                     ),
                   ),
                 ),
-              ];
-            }),
-          ],
-          iconTheme: IconThemeData(color: Colors.white),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xff270745),
-                  Color(0xff250543),
-                  Color(0xff170036),
-                  Color(0xff120032),
-                  Color(0xff120032),
+              ],
+              labelColor: Color.fromARGB(255, 255, 255, 255),
+              unselectedLabelColor: Color.fromARGB(255, 92, 91, 91),
+              indicatorSize: TabBarIndicatorSize.label,
+              indicator: MaterialIndicator(
+                color: Color(0xffd33361),
+                height: 5,
+                topLeftRadius: 0,
+                topRightRadius: 0,
+                bottomLeftRadius: 6,
+                bottomRightRadius: 6,
+                tabPosition: TabPosition.bottom,
+              ),
+            ),
+            title: Text("Hello - ${_user.email!}"),
+            // backgroundColor: Colors.black,
+            centerTitle: true,
+          ),
+          body: TabBarView(
+            children: [
+              Text("ok"),
+              AccordionPage(),
+              AccordionPage1(),
+            ],
+          ),
+        ),
+      ),
+      Positioned(
+        top: 95,
+        left: 30,
+        child: GestureDetector(
+          onTap: () {
+            Get.defaultDialog(
+              title: "Request",
+              textConfirm: "Send",
+              confirmTextColor: Colors.white,
+              textCancel: "Back",
+              content: Column(
+                children: [
+                  SizedBox(
+                    width: 250,
+                    height: 40,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        filled: true,
+                        hintStyle: TextStyle(color: Colors.grey[500]),
+                        hintText: "Phone number",
+                        fillColor: Colors.white70,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  InkWell(
+                    onTap: () => Get.to(ListWheel()),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
+                        child: Text("Select your choice"),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        showPicker(
+                          elevation: 20,
+                          blurredBackground: true,
+                          borderRadius: 50,
+                          context: context,
+                          value: _time,
+                          onChange: onTimeChanged,
+                          minuteInterval: MinuteInterval.FIVE,
+                          onChangeDateTime: (DateTime dateTime) {},
+                        ),
+                      );
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(57, 8, 57, 8),
+                        child: Text("Select start time"),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        showPicker(
+                          elevation: 20,
+                          blurredBackground: true,
+                          borderRadius: 50,
+                          context: context,
+                          value: _time,
+                          onChange: onTimeChanged,
+                          minuteInterval: MinuteInterval.FIVE,
+                          onChangeDateTime: (DateTime dateTime) {},
+                        ),
+                      );
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(60, 8, 60, 8),
+                        child: Text("Select end time"),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
+            );
+          },
+          child: SlideTransition(
+            position: _hoverAnimation,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xffd33361),
+                    offset: Offset(0.0, -10),
+                    blurRadius: 25,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.send_and_archive_outlined,
+                    size: 26.0,
+                    color: Colors.white,
+                  ),
+                  SizedBox(height: 8),
+                  Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      "Request",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
                 ],
               ),
             ),
           ),
-          toolbarHeight: 90,
-          titleTextStyle: TextStyle(fontSize: 20, color: Colors.white),
-          bottom: TabBar(
-            onTap: (value) {
-              if (value == 0) {
-                setState(() {
-                  isIndex0 = true;
-                });
-              } else {
-                setState(() {
-                  isIndex0 = false;
-                });
-              }
-              animate();
-            },
-            tabs: [
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: isIndex0 ? Color(0xffd33361) : Colors.transparent,
-                      offset: Offset(0.0, 65),
-                      blurRadius: 40,
-                      spreadRadius: 1,
-                    ),
-                    BoxShadow(
-                      color: isIndex0 ? Color(0xffcfd8dc) : Colors.transparent,
-                      offset: Offset(0.0, 130),
-                      blurRadius: 7,
-                      spreadRadius: 43,
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Tab(
-                    icon: Bouncy(
-                      duration: Duration(milliseconds: 2000),
-                      lift: isIndex0 ? 10 : 0,
-                      ratio: 0.5,
-                      pause: 0.5,
-                      child: SimpleAnimatedIcon(
-                        startIcon: Icons.cloud_download_sharp,
-                        endIcon: Icons.refresh,
-                        progress: _progress,
-                        transitions: const [
-                          Transitions.rotate_ccw,
-                          Transitions.zoom_in,
-                        ],
-                      ),
-                    ),
-                    text: "Fetch",
-                  ),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: isIndex0 ? Colors.transparent : Color(0xffd33361),
-                      offset: Offset(0.0, 65),
-                      blurRadius: 40,
-                      spreadRadius: 1,
-                    ),
-                    BoxShadow(
-                      color: isIndex0 ? Colors.transparent : Color(0xffcfd8dc),
-                      offset: Offset(0.0, 130),
-                      blurRadius: 7,
-                      spreadRadius: 43,
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Tab(
-                    icon: Bouncy(
-                      duration: Duration(milliseconds: 2000),
-                      lift: isIndex0 ? 0 : 10,
-                      ratio: 0.5,
-                      pause: 0.5,
-                      child: SimpleAnimatedIcon(
-                        startIcon: Icons.hourglass_empty,
-                        endIcon: Icons.check_circle_outline,
-                        progress: _progress,
-                        transitions: [
-                          Transitions.zoom_in,
-                          Transitions.rotate_ccw
-                        ],
-                      ),
-                    ),
-                    text: "Allow",
-                  ),
-                ),
-              ),
-            ],
-            labelColor: Color.fromARGB(255, 255, 255, 255),
-            unselectedLabelColor: Color.fromARGB(255, 92, 91, 91),
-            indicatorSize: TabBarIndicatorSize.label,
-            indicator: MaterialIndicator(
-              color: Color(0xffd33361),
-              height: 5,
-              topLeftRadius: 0,
-              topRightRadius: 0,
-              bottomLeftRadius: 6,
-              bottomRightRadius: 6,
-              tabPosition: TabPosition.bottom,
-            ),
-          ),
-          title: Text("Hello - 9932145671"),
-          // backgroundColor: Colors.black,
-          centerTitle: true,
         ),
-        body: TabBarView(
-          children: [
-            AccordionPage(),
-            AccordionPage1(),
-          ],
-        ),
-      ),
-    );
+      )
+    ]);
   }
 }

@@ -1,19 +1,35 @@
-// dummy LogIn page
-
 import 'package:animate_do/animate_do.dart';
 import 'package:components/screens/signup.dart';
 import 'package:components/utils/listWheelScrollView.dart';
 import 'package:components/utils/tabBar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LogIn extends StatelessWidget {
+import 'package:components/main.dart';
+
+class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);
+
+  @override
+  State<LogIn> createState() => _LogInState();
+}
+
+class _LogInState extends State<LogIn> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
             Color(0xff270745),
@@ -31,7 +47,7 @@ class LogIn extends StatelessWidget {
           children: [
             FadeInUp(
               child: Align(
-                alignment: Alignment(-0.75, -0.8),
+                alignment: const Alignment(-0.75, -0.8),
                 child: InkWell(
                   onTap: () =>
                       Get.to(SignUp(), transition: Transition.downToUp),
@@ -54,8 +70,8 @@ class LogIn extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     color: Colors.grey.shade600,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Text(
                         "Sign Up",
                         style: TextStyle(
@@ -69,7 +85,7 @@ class LogIn extends StatelessWidget {
               ),
             ),
             FadeInUp(
-              child: Align(
+              child: const Align(
                 alignment: Alignment(-0.55, -0.55),
                 child: Text(
                   "Welcome\nBack",
@@ -91,39 +107,38 @@ class LogIn extends StatelessWidget {
                   height: 80,
                   child: Card(
                     elevation: 10,
-                    child: Stack(
-                      children: [
-                        ListTile(
-                          minVerticalPadding: 20,
-                          trailing: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            child: Icon(Icons.person_outline),
-                          ),
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            filled: true,
-                            hintStyle: TextStyle(
-                              color: Colors.grey[500],
-                              fontSize: 13,
-                            ),
-                            hintText: "User Name",
-                            fillColor: Colors.transparent,
-                            isDense: true,
-                            contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 44),
-                          ),
-                          keyboardType: TextInputType.name,
-                        ),
-                      ],
-                    ),
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.white70, width: 1),
+                      side: const BorderSide(color: Colors.white70, width: 1),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     color: Colors.white,
+                    child: Stack(
+                      children: [
+                        const ListTile(
+                          minVerticalPadding: 20,
+                          trailing: Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              child: Icon(Icons.email_outlined)),
+                        ),
+                        TextField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              hintStyle: TextStyle(
+                                color: Colors.grey[500],
+                                fontSize: 13,
+                              ),
+                              hintText: "E-mail",
+                              fillColor: Colors.transparent,
+                              isDense: true,
+                              contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 44),
+                            ),
+                            keyboardType: TextInputType.emailAddress),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -146,10 +161,11 @@ class LogIn extends StatelessWidget {
                           minVerticalPadding: 20,
                           trailing: Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            child: Icon(Icons.email_outlined),
+                            child: Icon(Icons.password_outlined),
                           ),
                         ),
                         TextField(
+                          controller: _passwordController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -159,12 +175,12 @@ class LogIn extends StatelessWidget {
                               color: Colors.grey[500],
                               fontSize: 13,
                             ),
-                            hintText: "E-Mail",
+                            hintText: "Password",
                             fillColor: Colors.transparent,
                             isDense: true,
                             contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 44),
                           ),
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.visiblePassword,
                         ),
                       ],
                     ),
@@ -178,15 +194,23 @@ class LogIn extends StatelessWidget {
               ),
             ),
             FadeInUp(
+              delay: Duration(milliseconds: 1100),
+              child: Align(
+                alignment: Alignment(0.42, 0.07),
+                child: Text(
+                  "Forgot your Password?",
+                  style: TextStyle(
+                      fontSize: 13, color: Color.fromARGB(255, 255, 65, 118)),
+                ),
+              ),
+            ),
+            FadeInUp(
               duration: Duration(milliseconds: 500),
               delay: Duration(milliseconds: 1000),
               child: Align(
-                alignment: Alignment(0.0, 0.15),
+                alignment: Alignment(0.0, 0.22),
                 child: InkWell(
-                  onTap: () {
-                    Get.to(MyHomePage(title: "title"),
-                        transition: Transition.leftToRightWithFade);
-                  },
+                  onTap: () => signIn(),
                   child: Card(
                     color: Colors.transparent,
                     child: Container(
@@ -222,7 +246,7 @@ class LogIn extends StatelessWidget {
             FadeInUp(
               delay: Duration(milliseconds: 1100),
               child: Align(
-                alignment: Alignment(0.0, 0.3),
+                alignment: Alignment(0.0, 0.35),
                 child: Text(
                   "Or continue with",
                   style: TextStyle(fontSize: 13, color: Colors.white),
@@ -232,7 +256,7 @@ class LogIn extends StatelessWidget {
             FadeInUp(
               delay: Duration(milliseconds: 1150),
               child: Align(
-                alignment: Alignment(-0.7, 0.5),
+                alignment: Alignment(-0.7, 0.55),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -255,7 +279,7 @@ class LogIn extends StatelessWidget {
             FadeInUp(
               delay: Duration(milliseconds: 1200),
               child: Align(
-                alignment: Alignment(0.7, 0.5),
+                alignment: Alignment(0.7, 0.55),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -288,5 +312,23 @@ class LogIn extends StatelessWidget {
         ),
       ),
     );
+  }
+  Future signIn() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+    }
+
+    navigatorkey.currentState!.popUntil((route) => route.isFirst);
   }
 }
