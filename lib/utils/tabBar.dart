@@ -177,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             bottom: TabBar(
               // padding: EdgeInsets.symmetric(horizontal: 120),
               onTap: (value) {
-                if (value == 0) {
+                if (value == 1) {
                   setState(() {
                     isIndex0 = true;
                   });
