@@ -389,18 +389,26 @@ class _SignUpState extends State<SignUp> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => Center(
+      builder: (context) => const Center(
         child: CircularProgressIndicator(),
       ),
     );
     try {
-      FirebaseFirestore.instance.collection('userData').add({
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      final uniqueUserId = credential.user!.uid;
+      print(uniqueUserId);
+
+      final CollectionReference userInfoCollection = FirebaseFirestore.instance.collection('userInfo');
+
+      await userInfoCollection.doc(uniqueUserId).set({
         'username': _usernameController.text.trim(),
         'phone': _phoneController.text.trim()
       });
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+
     } on FirebaseAuthException catch (e) {
       print(e.toString());
     }

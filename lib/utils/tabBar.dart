@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     )..addListener(() {
         // call `build` on animation progress
         setState(() {});
@@ -90,8 +90,25 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     DrawerItem(icon: Icon(Icons.logout_rounded), label: "Logout"),
   ];
 
+  TextEditingController _phoneNumberController = TextEditingController();
+
+  // data to be sent to another user
+  var _startTimeHour;
+  var _startTimeMinute;
+  var _endTimeHour;
+  var _endTimeMinute;
+
+  // data will be sent through this dataType
+  var _phoneNumber;
+
   @override
   Widget build(BuildContext context) {
+    print(_startTimeHour);
+    print(_startTimeMinute);
+    print(_endTimeHour);
+    print(_endTimeMinute);
+    print(_phoneNumber);
+
     return Stack(children: [
       DefaultTabController(
         length: 3,
@@ -173,7 +190,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               ),
             ),
             toolbarHeight: 90,
-            titleTextStyle: TextStyle(fontSize: 15, color: Colors.white), // fontsize should be 20
+            titleTextStyle: TextStyle(
+                fontSize: 15, color: Colors.white), // fontsize should be 20
             bottom: TabBar(
               // padding: EdgeInsets.symmetric(horizontal: 120),
               onTap: (value) {
@@ -314,12 +332,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               textConfirm: "Send",
               confirmTextColor: Colors.white,
               textCancel: "Back",
+              onConfirm: () {
+                setState(() {
+                  _phoneNumber = _phoneNumberController.text.trim();
+                });
+              },
               content: Column(
                 children: [
                   SizedBox(
                     width: 250,
                     height: 40,
                     child: TextField(
+                      controller: _phoneNumberController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
@@ -331,7 +355,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   InkWell(
                     onTap: () => Get.to(ListWheel()),
                     child: Card(
@@ -339,13 +363,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       elevation: 10,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
+                      child: const Padding(
+                        padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
                         child: Text("Select your choice"),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   InkWell(
                     onTap: () {
                       Navigator.of(context).push(
@@ -357,7 +381,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           value: _time,
                           onChange: onTimeChanged,
                           minuteInterval: MinuteInterval.FIVE,
-                          onChangeDateTime: (DateTime dateTime) {},
+                          onChangeDateTime: (DateTime dateTime) {
+                            setState(() {
+                              _startTimeHour = dateTime.hour;
+                              _startTimeMinute = dateTime.minute;
+                            });
+                          },
                         ),
                       );
                     },
@@ -366,13 +395,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       elevation: 10,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(57, 8, 57, 8),
+                      child: const Padding(
+                        padding: EdgeInsets.fromLTRB(57, 8, 57, 8),
                         child: Text("Select start time"),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   InkWell(
                     onTap: () {
                       Navigator.of(context).push(
@@ -384,7 +413,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           value: _time,
                           onChange: onTimeChanged,
                           minuteInterval: MinuteInterval.FIVE,
-                          onChangeDateTime: (DateTime dateTime) {},
+                          onChangeDateTime: (DateTime dateTime) {
+                            setState(() {
+                              _endTimeHour = dateTime.hour;
+                              _endTimeMinute = dateTime.minute;
+                            });
+                          },
                         ),
                       );
                     },
