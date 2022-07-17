@@ -1,6 +1,8 @@
 import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/state_management/iconChange.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
@@ -15,6 +17,8 @@ class AccordionPage extends StatefulWidget //__
 
 class _AccordionPageState extends State<AccordionPage> {
   IconChange _iconChange = IconChange();
+  final _user = FirebaseAuth.instance.currentUser!;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final _headerStyle = const TextStyle(
       color: Color.fromARGB(255, 0, 0, 0),
@@ -59,29 +63,32 @@ class _AccordionPageState extends State<AccordionPage> {
                 ),
                 headerBorderRadius: 25,
                 isOpen: true,
-                // leftIcon: const Icon(Icons.insights_rounded, color: Colors.white),
                 headerBackgroundColor: Colors.white,
                 headerBackgroundColorOpened: Colors.white,
                 header: Text('Approved requests', style: _headerStyle),
-                content: ListOfItems(),
+                content: FetchedAcceptedRequest(),
                 contentHorizontalPadding: 20,
                 contentBorderWidth: 1,
                 contentBorderColor: Colors.white,
                 contentBorderRadius: 25,
               ),
-
               AccordionSection(
                 paddingBetweenOpenSections: 20,
                 paddingBetweenClosedSections: 20,
                 headerPadding: EdgeInsets.fromLTRB(20, 10, 10, 10),
-                rightIcon: Obx(()=> _iconChange.isAccordionOpen.value? Icon(Icons.remove_circle, color: Color(0xff250543),):Icon(Icons.add_circle, color:Color(0xff250543))),
+                rightIcon: Obx(() => _iconChange.isAccordionOpen.value
+                    ? Icon(
+                        Icons.remove_circle,
+                        color: Color(0xff250543),
+                      )
+                    : Icon(Icons.add_circle, color: Color(0xff250543))),
                 headerBorderRadius: 25,
                 isOpen: false,
                 headerBackgroundColor: Colors.white,
                 headerBackgroundColorOpened: Colors.white,
                 header: Text('List of pending or rejected requests',
                     style: _headerStyle),
-                content: ListOfItems(),
+                content: FetchPendingOrRejectedRequest(),
                 contentHorizontalPadding: 20,
                 contentBorderWidth: 1,
                 contentBorderColor: Colors.white,
@@ -99,101 +106,121 @@ class _AccordionPageState extends State<AccordionPage> {
       ),
     );
   }
-}
 
-Widget ListOfItems() {
-  return SizedBox(
-    height: 300,
-    child: SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: Row(
-     children: <Widget>[
-       Card(
-        shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
+  FetchPendingOrRejectedRequest() {
+    final RequestData = FirebaseFirestore.instance
+        .collection('Sessions')
+        .where("senderEmail", isEqualTo: _user.email)
+        .where("status", isNotEqualTo: "Approved")
+        .snapshots();
+    return SizedBox(
+      height: 128,
+      child: StreamBuilder(
+        stream: RequestData,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView(
+            scrollDirection: Axis.horizontal,
+            children: snapshot.data!.docs.map((document) {
+              return Container(
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow(blurRadius: 12)],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  border: Border.all(color: Colors.black, width: 0.2),
+                ),
+                margin: EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text("Sender - ${document['senderEmail']}"),
+                    ),
+                    Container(
+                      child: Text(
+                          "Start time - ${document['startTime_Hours'].toString()}:${document['startTime_Minutes'].toString()}"),
+                    ),
+                    Container(
+                      child: Text(
+                          "End time - ${document['endTime_Hours'].toString()}:${document['endTime_minutes'].toString()}"),
+                    ),
+                    Container(
+                      child: Text("Phone No - ${document['ReceiverPhoneNo']}"),
+                    ),
+                    Container(
+                      child: Text("Status - ${document['status']}"),
+                    )
+                  ],
+                ),
+              );
+            }).toList(),
+          );
+        },
       ),
-        color: Colors.transparent,
-        elevation: 10,
-        child: Container(
-          width: 200,
-          height: 270,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(30)
-          ),
-          child: Center(child: Text("List 1"))
-        ),
-       ),
-       SizedBox(width: 20),
-       Card(
-        shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
+    );
+  }
+
+  FetchedAcceptedRequest() {
+    final RequestData = FirebaseFirestore.instance
+        .collection('Sessions')
+        .where("senderEmail", isEqualTo: _user.email)
+        .where("status", isEqualTo: "Approved")
+        .snapshots();
+    return SizedBox(
+      height: 128,
+      child: StreamBuilder(
+        stream: RequestData,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView(
+            scrollDirection: Axis.horizontal,
+            children: snapshot.data!.docs.map((document) {
+              return Container(
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow(blurRadius: 12)],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  border: Border.all(color: Colors.black, width: 0.2),
+                ),
+                margin: EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text("Sender - ${document['senderEmail']}"),
+                    ),
+                    Container(
+                      child: Text(
+                          "Start time - ${document['startTime_Hours']}:${document['startTime_Minutes']}"),
+                    ),
+                    Container(
+                      child: Text(
+                          "End time - ${document['endTime_Hours']}:${document['endTime_minutes']}"),
+                    ),
+                    Container(
+                      child: Text("Phone No - ${document['ReceiverPhoneNo']}"),
+                    )
+                  ],
+                ),
+              );
+            }).toList(),
+          );
+        },
       ),
-        color: Colors.transparent,
-        elevation: 10,
-        child: Container(
-          width: 200,
-          height: 270,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(30)
-          ),
-          child: Center(child: Text("List 2"))
-        ),
-       ),
-       SizedBox(width: 20),Card(
-        shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
-      ),
-        color: Colors.transparent,
-        elevation: 10,
-        child: Container(
-          width: 200,
-          height: 270,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(30)
-          ),
-          child: Center(child: Text("List 3"))
-        ),
-       ),
-       SizedBox(width: 20),Card(
-        shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
-      ),
-        color: Colors.transparent,
-        elevation: 10,
-        child: Container(
-          width: 200,
-          height: 270,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(30)
-          ),
-          child: Center(child: Text("List 4"))
-        ),
-       ),
-       SizedBox(width: 20),Card(
-        shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
-      ),
-        color: Colors.transparent,
-        elevation: 10,
-        child: Container(
-          width: 200,
-          height: 270,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(30)
-          ),
-          child: Center(child: Text("List 5"))
-        ),
-       ),
-       SizedBox(width: 20),
-     ]
-    )
-),
-  );
+    );
+  }
 }
 
 class AccordionPage1 extends StatefulWidget //__
@@ -205,6 +232,9 @@ class AccordionPage1 extends StatefulWidget //__
 }
 
 class _AccordionPage1State extends State<AccordionPage1> {
+  final _user = FirebaseAuth.instance.currentUser!;
+  String _phoneNo = "";
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   final _headerStyle = const TextStyle(
       color: Color.fromARGB(255, 0, 0, 0),
       fontSize: 15,
@@ -225,6 +255,18 @@ class _AccordionPage1State extends State<AccordionPage1> {
 
   @override
   build(context) {
+    firestore
+        .collection('userInfo')
+        .where("useremail", isEqualTo: _user.email.toString())
+        .limit(1)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        _phoneNo = doc['phone'];
+      });
+    });
+    ;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.blueGrey[100],
@@ -252,7 +294,7 @@ class _AccordionPage1State extends State<AccordionPage1> {
                 headerBackgroundColor: Colors.white,
                 headerBackgroundColorOpened: Colors.white,
                 header: Text('Requests sent to you', style: _headerStyle),
-                content: ListOfItems(),
+                content: FetchAllRequest(),
                 contentHorizontalPadding: 20,
                 contentBorderWidth: 1,
                 contentBorderColor: Colors.white,
@@ -273,7 +315,7 @@ class _AccordionPage1State extends State<AccordionPage1> {
                 headerBackgroundColorOpened: Colors.white,
                 header: Text('List of pending or rejected requests',
                     style: _headerStyle),
-                content: ListOfItems(),
+                content: FetchUnansweredRequest(),
                 contentHorizontalPadding: 20,
                 contentBorderWidth: 1,
                 contentBorderColor: Colors.white,
@@ -283,6 +325,145 @@ class _AccordionPage1State extends State<AccordionPage1> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  FetchAllRequest() {
+    final RequestData = FirebaseFirestore.instance
+        .collection('Sessions')
+        .where("ReceiverPhoneNo", isEqualTo: _phoneNo)
+        .snapshots();
+    print(_phoneNo);
+    return SizedBox(
+      height: 128,
+      child: StreamBuilder(
+        stream: RequestData,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView(
+            scrollDirection: Axis.horizontal,
+            children: snapshot.data!.docs.map((document) {
+              return Container(
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow(blurRadius: 12)],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  border: Border.all(color: Colors.black, width: 0.2),
+                ),
+                margin: EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text("Sender - ${document['senderEmail']}"),
+                    ),
+                    Container(
+                      child: Text(
+                          "Start time - ${document['startTime_Hours']}:${document['startTime_Minutes']}"),
+                    ),
+                    Container(
+                      child: Text(
+                          "End time - ${document['endTime_Hours']}:${document['endTime_minutes']}"),
+                    ),
+                    (document['status'] == 'Approved')
+                        ? Container(child: Text("Accepted"))
+                        : (document['status'] == 'rejected')
+                            ? Container(child: Text("Rejected"))
+                            : Container(
+                                width: 110,
+                                child: Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        firestore
+                                            .collection("Sessions")
+                                            .doc(document.id)
+                                            .update({'status': 'Approved'});
+                                      },
+                                      child: Text("Accept ?"),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        firestore
+                                            .collection("Sessions")
+                                            .doc(document.id)
+                                            .update({'status': 'rejected'});
+                                      },
+                                      child: Text("Reject ?"),
+                                    ),
+                                  ],
+                                ),
+                              )
+                  ],
+                ),
+              );
+            }).toList(),
+          );
+        },
+      ),
+    );
+  }
+
+  FetchUnansweredRequest() {
+    final RequestData = FirebaseFirestore.instance
+        .collection('Sessions')
+        .where("ReceiverPhoneNo", isEqualTo: _phoneNo)
+        .where("status", isNotEqualTo: "Approved")
+        .snapshots();
+    print(_phoneNo);
+    return SizedBox(
+      height: 128,
+      child: StreamBuilder(
+        stream: RequestData,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView(
+            scrollDirection: Axis.horizontal,
+            children: snapshot.data!.docs.map((document) {
+              return Container(
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow(blurRadius: 12)],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  border: Border.all(color: Colors.black, width: 0.2),
+                ),
+                margin: EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text("Sender - ${document['senderEmail']}"),
+                    ),
+                    Container(
+                      child: Text(
+                          "Start time - ${document['startTime_Hours']}:${document['startTime_Minutes']}"),
+                    ),
+                    Container(
+                      child: Text(
+                          "End time - ${document['endTime_Hours']}:${document['endTime_minutes']}"),
+                    ),
+                    Container(
+                      child: Text("status - ${document['status']}"),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          );
+        },
       ),
     );
   }

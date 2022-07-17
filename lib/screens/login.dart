@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/screens/signup.dart';
 import 'package:components/utils/listWheelScrollView.dart';
 import 'package:components/utils/tabBar.dart';
@@ -18,6 +19,7 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void dispose() {
@@ -313,6 +315,7 @@ class _LogInState extends State<LogIn> {
       ),
     );
   }
+
   Future signIn() async {
     showDialog(
       context: context,
@@ -322,9 +325,11 @@ class _LogInState extends State<LogIn> {
       ),
     );
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim())
+          .then((userCredential) {});
     } on FirebaseAuthException catch (e) {
       print(e.toString());
     }

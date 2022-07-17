@@ -19,6 +19,7 @@ class _SignUpState extends State<SignUp> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -402,13 +403,23 @@ class _SignUpState extends State<SignUp> {
       final uniqueUserId = credential.user!.uid;
       print(uniqueUserId);
 
-      final CollectionReference userInfoCollection = FirebaseFirestore.instance.collection('userInfo');
-
+      final CollectionReference userInfoCollection =
+          FirebaseFirestore.instance.collection('userInfo');
+      DateTime now = DateTime.now();
       await userInfoCollection.doc(uniqueUserId).set({
         'username': _usernameController.text.trim(),
-        'phone': _phoneController.text.trim()
+        'phone': _phoneController.text.trim(),
+        'userID': _usernameController.text
+                .trim()
+                .toLowerCase()
+                .replaceAll(RegExp(' +'), '_') +
+            now.day.toString() +
+            now.hour.toString() +
+            now.minute.toString() +
+            now.second.toString() +
+            now.millisecond.toString(),
+        'useremail': _emailController.text.trim(),
       });
-
     } on FirebaseAuthException catch (e) {
       print(e.toString());
     }
