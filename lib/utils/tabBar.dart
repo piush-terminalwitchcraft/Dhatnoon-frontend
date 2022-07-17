@@ -1,4 +1,5 @@
 import 'package:bouncy_widget/bouncy_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/screens/login.dart';
 import 'package:components/screens/profile.dart';
 import 'package:components/screens/settings.dart';
@@ -9,6 +10,7 @@ import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:day_night_time_picker/lib/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:simple_animated_icon/simple_animated_icon.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -22,13 +24,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  final _user = FirebaseAuth.instance.currentUser!;
-
   bool _isOpened = false;
 
   // for tabs
   late AnimationController _animationController;
   late Animation<double> _progress;
+
+  // All instance of firebase services
+  final _user = FirebaseAuth.instance.currentUser!;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // for hover effect
   late final AnimationController _hoverController =
@@ -101,14 +105,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   // data will be sent through this dataType
   var _phoneNumber;
 
+  bool dataUploaded = true;
+
   @override
   Widget build(BuildContext context) {
-    print(_startTimeHour);
-    print(_startTimeMinute);
-    print(_endTimeHour);
-    print(_endTimeMinute);
-    print(_phoneNumber);
-
     return Stack(children: [
       DefaultTabController(
         length: 3,
@@ -333,9 +333,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               confirmTextColor: Colors.white,
               textCancel: "Back",
               onConfirm: () {
-                setState(() {
-                  _phoneNumber = _phoneNumberController.text.trim();
-                });
+                // setState(() async {
+                //   await
+                // });
+                print("Clicked successfully");
+                addSessionDataToFirebase();
               },
               content: Column(
                 children: [
@@ -474,5 +476,42 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ),
       )
     ]);
+  }
+
+  addSessionDataToFirebase() async {
+    print(_user.email.toString());
+    print(_phoneNumberController.text.trim());
+    print(_startTimeHour);
+    print(_endTimeHour);
+    await FirebaseFirestore.instance
+        .collection('Sessions')
+        .add({
+          'senderEmail': _user.email.toString(),
+          'ReceiverPhoneNo': _phoneNumberController.text.trim(),
+          'startTime_Hours': _startTimeHour,
+          'startTime_Minutes': _startTimeMinute,
+          'endTime_Hours': _endTimeHour,
+          'endTime_minutes': _endTimeMinute,
+          'status': 'pending',
+          'mode': 'Front Camera Mode',
+        })
+        .catchError((e) => {
+              Fluttertoast.showToast(
+                msg: '${e.toString()}',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.yellow,
+              )
+            })
+        .then((value) => {
+              Fluttertoast.showToast(
+                  msg: 'Uploaded Successfully!',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.black,
+                  textColor: Colors.white)
+            });
+    _phoneNumberController.clear();
   }
 }
