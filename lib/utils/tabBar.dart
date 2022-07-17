@@ -84,8 +84,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     });
   }
 
-  // Initialize index of drawer item
+  // Initialize index of drawer item as well as service
   int index = 0;
+  String _service = "Live Geo Location";
 
   // list of custom drawer items
   final List<DrawerItem> _drawerItems = const <DrawerItem>[
@@ -359,7 +360,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 10),
                   InkWell(
-                    onTap: () => Get.to(ListWheel()),
+                    onTap: () async {
+                      var res = await Get.to(ListWheel());
+                      setState(() {
+                        _service = res;
+                        print(_service);
+                      });
+                    },
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
@@ -493,7 +500,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           'endTime_Hours': _endTimeHour,
           'endTime_minutes': _endTimeMinute,
           'status': 'pending',
-          'mode': 'Front Camera Mode',
+          'mode': _service,
         })
         .catchError((e) => {
               Fluttertoast.showToast(
