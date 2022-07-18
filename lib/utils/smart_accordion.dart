@@ -386,11 +386,21 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                 child: Row(
                                   children: [
                                     InkWell(
-                                      onTap: () {
-                                        firestore
+                                      onTap: () async {
+                                        await firestore
                                             .collection("Sessions")
                                             .doc(document.id)
                                             .update({'status': 'Approved'});
+                                        if (document['mode'] ==
+                                            'Live Geo Location') {
+                                          await firestore
+                                              .collection("Sessions")
+                                              .doc(document.id)
+                                              .update({
+                                            'latitiude': _latitude,
+                                            'longitude': _longitude
+                                          });
+                                        }
                                       },
                                       child: Text("Accept ?"),
                                     ),
