@@ -235,6 +235,11 @@ class _AccordionPage1State extends State<AccordionPage1> {
   final _user = FirebaseAuth.instance.currentUser!;
   String _phoneNo = "";
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // geo-location
+  String _latitude = "0.0";
+  String _longitude = "0.0";
+
   final _headerStyle = const TextStyle(
       color: Color.fromARGB(255, 0, 0, 0),
       fontSize: 15,
@@ -464,6 +469,22 @@ class _AccordionPage1State extends State<AccordionPage1> {
             }).toList(),
           );
         },
+      ),
+    );
+  }
+}
+
+class Marker extends StatelessWidget {
+  const Marker({Key? key, this.latitude, this.longitude}) : super(key: key);
+
+  final String? latitude;
+  final String? longitude;
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text("New Page"),
       ),
     );
   }
