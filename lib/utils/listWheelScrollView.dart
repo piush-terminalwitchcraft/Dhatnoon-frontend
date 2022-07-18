@@ -40,7 +40,9 @@ class _ListWheelState extends State<ListWheel> {
         scrollController: _scrollController,
         itemHeight: _itemHeight,
         itemCount: _itemCount,
-        onItemTapCallback: (index) {},
+        onItemTapCallback: (index) {
+          Navigator.of(context).pop(_items[index]);
+        },
         child: ListWheelScrollView.useDelegate(
           squeeze: 0.8,
           itemExtent: _itemHeight,
@@ -66,15 +68,15 @@ class _ListWheelState extends State<ListWheel> {
         ),
         child: Container(
           decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                gradient: LinearGradient(colors: [
-                  Color(0xff270745),
-                  Color(0xff250543),
-                  Color(0xff170036),
-                  Color(0xff120032),
-                  Color(0xff120032),
-                ]),
-              ),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            gradient: LinearGradient(colors: [
+              Color(0xff270745),
+              Color(0xff250543),
+              Color(0xff170036),
+              Color(0xff120032),
+              Color(0xff120032),
+            ]),
+          ),
           child: Center(
             child: ListTile(
               title: Text(
