@@ -157,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     return [
                       PopupMenuItem(
                         child: InkWell(
-                          onTap: () => Get.to(SettingsPage()),
+                          onTap: () => Get.to(MapWala(latitude: 19.8064417, longitude: 72.7463952)),
                           child: const ListTile(
                             title: Text("Settings   "),
                             trailing: Icon(Icons.settings),

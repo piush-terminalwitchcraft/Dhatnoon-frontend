@@ -176,7 +176,7 @@ class _AccordionPageState extends State<AccordionPage> {
         .where("status", isEqualTo: "Approved")
         .snapshots();
     return SizedBox(
-      height: 128,
+      height: 160,
       child: StreamBuilder(
         stream: RequestData,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -205,6 +205,9 @@ class _AccordionPageState extends State<AccordionPage> {
                       child: Text("Sender - ${document['senderEmail']}"),
                     ),
                     Container(
+                      child: Text("Mode - ${document['mode']}"),
+                    ),
+                    Container(
                       child: Text(
                           "Start time - ${document['startTime_Hours']}:${document['startTime_Minutes']}"),
                     ),
@@ -214,7 +217,22 @@ class _AccordionPageState extends State<AccordionPage> {
                     ),
                     Container(
                       child: Text("Phone No - ${document['ReceiverPhoneNo']}"),
-                    )
+                    ),
+                    Container(
+                      child: InkWell(
+                        child: Text("View"),
+                        onTap: () {
+                          print("tap working");
+                          if (document['mode'] == 'Live Geo Location') {
+                            
+                            Get.to(MapWala(
+                              latitude: double.parse(document['latitude']),
+                              longitude: double.parse(document['longitude']),
+                            ));
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
               );
@@ -344,7 +362,7 @@ class _AccordionPage1State extends State<AccordionPage1> {
         .snapshots();
     print(_phoneNo);
     return SizedBox(
-      height: 128,
+      height: 150,
       child: StreamBuilder(
         stream: RequestData,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -373,6 +391,9 @@ class _AccordionPage1State extends State<AccordionPage1> {
                       child: Text("Sender - ${document['senderEmail']}"),
                     ),
                     Container(
+                      child: Text("Mode - ${document['mode']}"),
+                    ),
+                    Container(
                       child: Text(
                           "Start time - ${document['startTime_Hours']}:${document['startTime_Minutes']}"),
                     ),
@@ -397,19 +418,16 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                         if (document['mode'] ==
                                             'Live Geo Location') {
                                           _determinePosition().then((value) {
-                                            // Get.to(Marker(
-                                            //   latitude: value.latitude,
-                                            //   longitude: value.longitude,
-                                            // ));
                                             firestore
                                                 .collection("Sessions")
                                                 .doc(document.id)
                                                 .update({
-                                              'latitiude':
+                                              'latitude':
                                                   value.latitude.toString(),
                                               'longitude':
-                                                  value.longitude.toString()
+                                                  value.longitude.toString(),
                                             });
+                                            
                                           });
                                         }
                                       },
@@ -533,8 +551,8 @@ class _AccordionPage1State extends State<AccordionPage1> {
   }
 }
 
-class Marker extends StatelessWidget {
-  const Marker({Key? key, this.latitude, this.longitude}) : super(key: key);
+class MapWala extends StatelessWidget {
+  const MapWala({Key? key, this.latitude, this.longitude}) : super(key: key);
 
   final double? latitude;
   final double? longitude;
@@ -546,8 +564,14 @@ class Marker extends StatelessWidget {
       height: 20,
       child: GoogleMap(
         initialCameraPosition:
-            CameraPosition(target: LatLng(latitude!, longitude!)),
+            CameraPosition(target: LatLng(latitude!, longitude!), zoom: 14.5),
+        markers: {
+          Marker(
+              markerId: MarkerId("source"),
+              position: LatLng(latitude!, longitude!)),
+        },
       ),
     );
   }
 }
+
