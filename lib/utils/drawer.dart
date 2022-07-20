@@ -3,6 +3,7 @@
 
 import 'package:components/screens/profile.dart';
 import 'package:components/screens/splash.dart';
+import 'package:components/services/front_camera_pic.dart';
 import 'package:curved_drawer_fork/curved_drawer_fork.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -56,6 +57,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               setState(() {
                 index = newIndex;
               });
+              
             },
           ),
         ),

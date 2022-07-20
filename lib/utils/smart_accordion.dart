@@ -229,6 +229,7 @@ class _AccordionPageState extends State<AccordionPage> {
                               latitude: double.parse(document['latitude']),
                               longitude: double.parse(document['longitude']),
                             ));
+                            
                           }
                         },
                       ),
@@ -427,6 +428,7 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                               'longitude':
                                                   value.longitude.toString(),
                                             });
+                                          
                                             
                                           });
                                         }

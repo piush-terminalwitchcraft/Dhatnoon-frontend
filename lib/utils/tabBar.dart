@@ -3,6 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/screens/login.dart';
 import 'package:components/screens/profile.dart';
 import 'package:components/screens/settings.dart';
+import 'package:components/services/front_camera_pic.dart';
+import 'package:components/services/front_camera_recording.dart';
+import 'package:components/services/rear_camera_pic.dart';
+import 'package:components/services/rear_camera_recording.dart';
 import 'package:components/utils/listWheelScrollView.dart';
 import 'package:components/utils/smart_accordion.dart';
 import 'package:curved_drawer_fork/curved_drawer_fork.dart';
@@ -157,9 +161,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     return [
                       PopupMenuItem(
                         child: InkWell(
-                          onTap: () => Get.to(MapWala(latitude: 19.8064417, longitude: 72.7463952)),
+                          // onTap: () => Get.to(MapWala(latitude: 19.8064417, longitude: 72.7463952)),
+                          onTap: () => Get.to(FrontCameraPic()),
                           child: const ListTile(
-                            title: Text("Settings   "),
+                            title: Text("Testing   "),
                             trailing: Icon(Icons.settings),
                           ),
                         ),

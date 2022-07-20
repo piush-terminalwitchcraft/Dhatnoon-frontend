@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:components/deletable/shape.dart';
 import 'package:components/screens/login.dart';
 import 'package:components/screens/signup.dart';
@@ -19,6 +20,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  final cameras = await availableCameras();
+  final front_Camera = cameras[1];  // front camera
+  final rear_Camera = cameras[0];
+
+  
+    // rear camera
   runApp(MyApp());
 }
 
