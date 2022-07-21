@@ -59,7 +59,7 @@ class FrontCameraPicState extends State<FrontCameraPic> {
             // Pass the automatically generated path to
             // the DisplayPictureScreen widget.
             imagePath: image.path,
-            cameraMode : 'front',
+            cameraMode: 'front',
           ),
         ),
       );

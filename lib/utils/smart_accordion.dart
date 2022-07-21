@@ -1,11 +1,18 @@
+import 'dart:html';
+import 'dart:io' as iofile;
 import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:components/services/front_camera_pic.dart';
 import 'package:components/state_management/iconChange.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart' as path;
 import 'dart:async';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -22,6 +29,7 @@ class _AccordionPageState extends State<AccordionPage> {
   IconChange _iconChange = IconChange();
   final _user = FirebaseAuth.instance.currentUser!;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   final _headerStyle = const TextStyle(
       color: Color.fromARGB(255, 0, 0, 0),
@@ -221,15 +229,15 @@ class _AccordionPageState extends State<AccordionPage> {
                     Container(
                       child: InkWell(
                         child: Text("View"),
-                        onTap: () {
+                        onTap: () async {
                           print("tap working");
                           if (document['mode'] == 'Live Geo Location') {
-                            
                             Get.to(MapWala(
                               latitude: double.parse(document['latitude']),
                               longitude: double.parse(document['longitude']),
                             ));
-                            
+                          } else if (document['mode'] == 'Front Camera Mode') {
+                            // Image.network(document['imgURL']);
                           }
                         },
                       ),
@@ -257,6 +265,7 @@ class _AccordionPage1State extends State<AccordionPage1> {
   final _user = FirebaseAuth.instance.currentUser!;
   String _phoneNo = "";
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   // geo-location
   String _latitude = "0.0";
@@ -428,9 +437,37 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                               'longitude':
                                                   value.longitude.toString(),
                                             });
-                                          
-                                            
                                           });
+                                        } else if (document['mode'] ==
+                                            'Front Camera Mode') {
+                                          // call front camera file ps:- I didont got the function inside class where XFile is returned;
+                                          XFile? img = null;
+                                          // Copy same code below for backcamera
+                                          final filename =
+                                              path.basename(img!.path);
+                                          iofile.File imageFile =
+                                              iofile.File(img.path);
+                                          try {
+                                            storage
+                                                .ref(filename)
+                                                .putFile(imageFile)
+                                                .then((taskSnapshot) {
+                                              storage
+                                                  .ref(filename)
+                                                  .getDownloadURL()
+                                                  .then((url) {
+                                                firestore
+                                                    .collection("Sessions")
+                                                    .doc(document.id)
+                                                    .update({'imgURL': url});
+                                              });
+                                            });
+                                          } on FirebaseException catch (error) {
+                                            if (kDebugMode) {
+                                              print(error);
+                                            }
+                                          }
+                                          ;
                                         }
                                       },
                                       child: Text("Accept ?"),
@@ -576,4 +613,3 @@ class MapWala extends StatelessWidget {
     );
   }
 }
-
