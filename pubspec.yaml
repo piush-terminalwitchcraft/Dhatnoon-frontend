@@ -51,6 +51,7 @@ dependencies:
   fluttertoast: ^8.0.9
   geolocator: ^9.0.1
   google_maps_flutter: ^2.1.8
+  firebase_storage: ^10.3.2
 
   camera: ^0.10.0
   video_player: ^2.4.5
