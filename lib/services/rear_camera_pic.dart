@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
-import 'package:components/services/photo_page.dart';
+import 'package:components/state_management/state_of_back_cam_pic.dart';
 import 'package:components/utils/tabBar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class RearCameraPic extends StatefulWidget {
 
@@ -14,6 +15,8 @@ class RearCameraPic extends StatefulWidget {
 class RearCameraPicState extends State<RearCameraPic> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+
+  StateOfBackCamPic stateOfBackCamPic = Get.find();
 
   @override
   void initState() {
@@ -50,20 +53,10 @@ class RearCameraPicState extends State<RearCameraPic> {
       // Attempt to take a picture and get the file `image`
       // where it was saved.
       final image = await _controller.takePicture();
+      stateOfBackCamPic.setBackCameraPic(image);
 
       if (!mounted) return;
 
-      // If the picture was taken, display it on a new screen.
-      await Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => DisplayPictureScreen(
-            // Pass the automatically generated path to
-            // the DisplayPictureScreen widget.
-            imagePath: image.path,
-            cameraMode: 'rear',
-          ),
-        ),
-      );
     } catch (e) {
       // If an error occurs, log the error to the console.
       print(e);

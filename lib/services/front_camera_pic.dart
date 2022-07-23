@@ -2,18 +2,21 @@ import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:components/services/photo_page.dart';
+import 'package:components/state_management/state_of_front_cam_pic.dart';
 import 'package:components/utils/tabBar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class FrontCameraPic extends StatefulWidget {
   @override
   FrontCameraPicState createState() => FrontCameraPicState();
-      
 }
 
 class FrontCameraPicState extends State<FrontCameraPic> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+
+  StateOfFrontCamPic stateOfFrontCamPic = Get.find();
 
   @override
   void initState() {
@@ -50,20 +53,11 @@ class FrontCameraPicState extends State<FrontCameraPic> {
       // Attempt to take a picture and get the file `image`
       // where it was saved.
       final image = await _controller.takePicture();
+      stateOfFrontCamPic.setFrontCameraPic(image);
 
+      setState(() {});
       if (!mounted) return;
 
-      // If the picture was taken, display it on a new screen.
-      await Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => DisplayPictureScreen(
-            // Pass the automatically generated path to
-            // the DisplayPictureScreen widget.
-            imagePath: image.path,
-            cameraMode: 'front',
-          ),
-        ),
-      );
     } catch (e) {
       // If an error occurs, log the error to the console.
       print(e);

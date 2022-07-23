@@ -98,10 +98,10 @@ List<String> _items = [
   "Back Camera Pic",
   "Front Camera Streaming",
   "Back Camera Streaming",
-  "Front Camera 10 second video",
-  "Back Camera 10 second video",
+  "Front Camera 10 Second Video",
+  "Back Camera 10 Second Video",
   "Audio Live Streaming",
-  "10 second Audio recording"
+  "10 Second Audio Recording"
 ];
 
 List<Icon> _icons = [

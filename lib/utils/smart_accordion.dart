@@ -7,7 +7,14 @@ import 'package:components/agora_services/audio_streaming.dart';
 import 'package:components/agora_services/front_camera_streaming.dart';
 import 'package:components/agora_services/rear_camera_streaming.dart';
 import 'package:components/services/front_camera_pic.dart';
+import 'package:components/services/front_camera_recording.dart';
+import 'package:components/services/photo_page.dart';
+import 'package:components/services/rear_camera_pic.dart';
 import 'package:components/state_management/iconChange.dart';
+import 'package:components/state_management/state_of_back_cam_pic.dart';
+import 'package:components/state_management/state_of_back_cam_rec.dart';
+import 'package:components/state_management/state_of_front_cam_pic.dart';
+import 'package:components/state_management/state_of_front_cam_rec.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -239,9 +246,23 @@ class _AccordionPageState extends State<AccordionPage> {
                               longitude: double.parse(document['longitude']),
                             ));
                           }
-                          if (document['mode'] == 'Front Camera Mode') {
-                            // Image.network(document['imgURL']);
+                          if (document['mode'] == 'Front Camera Pic') {
+                            Get.to(DisplayPictureScreen(
+                                imagePath: document['frontImgURL'],
+                                cameraMode: 'Front'));
                           }
+                          if (document['mode'] == 'Back Camera Pic') {
+                            Get.to(DisplayPictureScreen(
+                                imagePath: document['backImgURL'],
+                                cameraMode: 'Back'));
+                          }
+                          if (document['mode'] == 'Front Camera 10 Second Video') {
+                               // idar click karne ke baad video play hoga
+                          }
+                          if (document['mode'] == 'Back Camera 10 Second Video') {
+                               // idar click karne ke baad video play hoga
+                          }
+
                           if (document['mode'] == 'Front Camera Streaming') {
                             Get.to(FrontReciverStream());
                           }
@@ -251,7 +272,6 @@ class _AccordionPageState extends State<AccordionPage> {
                           if (document['mode'] == 'Audio Live Streaming') {
                             Get.to(AudioRecieveStream());
                           }
-
                         },
                       ),
                     ),
@@ -280,6 +300,12 @@ class _AccordionPage1State extends State<AccordionPage1> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseStorage storage = FirebaseStorage.instance;
 
+  StateOfFrontCamPic stateOfFrontCamPic = Get.find();
+  StateOfBackCamPic stateOfBackCamPic = Get.find();
+
+  StateOfFrontCamRec stateOfFrontCamRec = Get.find();
+  StateOfBackCamRec stateOfBackCamRec = Get.find();
+
   // geo-location
   String _latitude = "0.0";
   String _longitude = "0.0";
@@ -288,19 +314,6 @@ class _AccordionPage1State extends State<AccordionPage1> {
       color: Color.fromARGB(255, 0, 0, 0),
       fontSize: 15,
       fontWeight: FontWeight.bold);
-
-  final _contentStyleHeader = const TextStyle(
-      color: Color.fromARGB(255, 0, 0, 0),
-      fontSize: 14,
-      fontWeight: FontWeight.w700);
-
-  final _contentStyle = const TextStyle(
-      color: Color.fromARGB(255, 0, 0, 0),
-      fontSize: 14,
-      fontWeight: FontWeight.normal);
-
-  final _loremIpsum =
-      '''Lorem ipsum is typically a corrupted version of 'De finibus bonorum et malorum', a 1st century BC text by the Roman statesman and philosopher Cicero, with words altered, added, and removed to make it nonsensical and improper Latin.Lorem ipsum is typically a corrupted version of 'De finibus bonorum et malorum', a 1st century BC text by the Roman statesman and philosopher Cicero, with words altered, added, and removed to make it nonsensical and improper Latin.''';
 
   @override
   build(context) {
@@ -453,48 +466,103 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                           });
                                         }
                                         if (document['mode'] ==
-                                            'Front Camera Mode') {
-                                          // call front camera file ps:- I didont got the function inside class where XFile is returned;
-                                          XFile? img = null;
-                                          // Copy same code below for backcamera
-                                          final filename =
-                                              path.basename(img!.path);
-                                          iofile.File imageFile =
-                                              iofile.File(img.path);
-                                          try {
-                                            storage
-                                                .ref(filename)
-                                                .putFile(imageFile)
-                                                .then((taskSnapshot) {
+                                            'Front Camera Pic') {
+                                          Get.to(FrontCameraPic());
+
+                                          Future.delayed(Duration(seconds: 4),
+                                              () {
+                                            XFile img = stateOfFrontCamPic
+                                                .frontCameraPic.value;
+
+                                            final filename =
+                                                path.basename(img.path);
+                                            iofile.File imageFile =
+                                                iofile.File(img.path);
+                                            try {
                                               storage
                                                   .ref(filename)
-                                                  .getDownloadURL()
-                                                  .then((url) {
-                                                firestore
-                                                    .collection("Sessions")
-                                                    .doc(document.id)
-                                                    .update({'imgURL': url});
+                                                  .putFile(imageFile)
+                                                  .then((taskSnapshot) {
+                                                storage
+                                                    .ref(filename)
+                                                    .getDownloadURL()
+                                                    .then((url) {
+                                                  firestore
+                                                      .collection("Sessions")
+                                                      .doc(document.id)
+                                                      .update(
+                                                          {'frontImgURL': url});
+                                                });
                                               });
-                                            });
-                                          } on FirebaseException catch (error) {
-                                            if (kDebugMode) {
-                                              print(error);
+                                            } on FirebaseException catch (error) {
+                                              if (kDebugMode) {
+                                                print(error);
+                                              }
                                             }
-                                          }
-                                          ;
+                                            ;
+                                          });
                                         }
+
+                                        if (document['mode'] ==
+                                            'Back Camera Pic') {
+                                          Get.to(RearCameraPic());
+
+                                          Future.delayed(Duration(seconds: 4),
+                                              () {
+                                            XFile img = stateOfBackCamPic
+                                                .backCameraPic.value;
+
+                                            final filename =
+                                                path.basename(img.path);
+                                            iofile.File imageFile =
+                                                iofile.File(img.path);
+                                            try {
+                                              storage
+                                                  .ref(filename)
+                                                  .putFile(imageFile)
+                                                  .then((taskSnapshot) {
+                                                storage
+                                                    .ref(filename)
+                                                    .getDownloadURL()
+                                                    .then((url) {
+                                                  firestore
+                                                      .collection("Sessions")
+                                                      .doc(document.id)
+                                                      .update(
+                                                          {'backImgURL': url});
+                                                });
+                                              });
+                                            } on FirebaseException catch (error) {
+                                              if (kDebugMode) {
+                                                print(error);
+                                              }
+                                            }
+                                            ;
+                                          });
+                                        }
+
+                                        if (document['mode'] ==
+                                            'Front Camera 10 Second Video') {
+                                          
+                                        }
+
+                                        if (document['mode'] ==
+                                            'Back Camera 10 Second Video') {
+                                        
+                                        }
+
                                         if (document['mode'] ==
                                             'Front Camera Streaming') {
                                           Get.to(FrontSendStream());
                                         }
                                         if (document['mode'] ==
                                             'Back Camera Streaming') {
-                                              Get.to(BackSendStream());
-                                            }
+                                          Get.to(BackSendStream());
+                                        }
                                         if (document['mode'] ==
                                             'Audio Live Streaming') {
-                                              Get.to(AudioSendStream());
-                                            }
+                                          Get.to(AudioSendStream());
+                                        }
                                       },
                                       child: Text("Accept ?"),
                                     ),

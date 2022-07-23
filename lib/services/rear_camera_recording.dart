@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:components/state_management/state_of_back_cam_rec.dart';
 import 'package:components/utils/tabBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,8 @@ class _RearCameraRecordingState extends State<RearCameraRecording> {
   bool _isLoading = true;
   bool _isRecording = false;
   late CameraController _cameraController;
+
+  StateOfBackCamRec stateOfBackCamRec = Get.find();
 
   @override
   void initState() {
@@ -46,6 +49,9 @@ class _RearCameraRecordingState extends State<RearCameraRecording> {
     if (_isRecording) {
       // this file needs to be uploaded to firebase
       final file = await _cameraController.stopVideoRecording();
+      
+      stateOfBackCamRec.setBackCameraRec(file);
+      
       setState(() => _isRecording = false);
 
       print(file);

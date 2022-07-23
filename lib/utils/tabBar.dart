@@ -165,7 +165,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         child: InkWell(
                           // onTap: () => Get.to(MapWala(latitude: 19.8064417, longitude: 72.7463952)),
                           onTap: () {
-                            // Get.to(FrontStream());
+                            print("weirdooooooo");
+                            Get.to(DisplayPictureScreen(
+                                imagePath: "https://firebasestorage.googleapis.com/v0/b/dhatnoon-backend.appspot.com/o/CAP5565661985540565896.jpg?alt=media&token=4b202f67-d140-4ff5-a5b1-47603a8313d1", cameraMode: "front"));
                           },
                           child: const ListTile(
                             title: Text("Testing   "),

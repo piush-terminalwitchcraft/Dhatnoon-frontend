@@ -1,15 +1,12 @@
 import 'package:camera/camera.dart';
-import 'package:components/deletable/shape.dart';
 import 'package:components/screens/login.dart';
-import 'package:components/screens/signup.dart';
-import 'package:components/screens/splash.dart';
-import 'package:components/utils/drawer.dart';
-import 'package:components/utils/listWheelScrollView.dart';
-import 'package:components/utils/request.dart';
-import 'package:components/utils/rivetest.dart';
-import 'package:components/utils/smart_accordion.dart';
+
+import 'package:components/state_management/state_of_back_cam_pic.dart';
+import 'package:components/state_management/state_of_back_cam_rec.dart';
+import 'package:components/state_management/state_of_front_cam_pic.dart';
+import 'package:components/state_management/state_of_front_cam_rec.dart';
+
 import 'package:components/utils/tabBar.dart';
-import 'package:components/utils/timepicker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -34,6 +31,13 @@ final navigatorkey = GlobalKey<NavigatorState>();
 
 // ignore: use_key_in_widget_constructors
 class MyApp extends StatelessWidget {
+
+  StateOfFrontCamPic stateOfFrontCamPic = Get.put(StateOfFrontCamPic());
+  StateOfBackCamPic stateOfBackCamPic = Get.put(StateOfBackCamPic());
+
+  StateOfFrontCamRec stateOfFrontCamRec = Get.put(StateOfFrontCamRec());
+  StateOfBackCamRec stateOfBackCamRec = Get.put(StateOfBackCamRec());
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
