@@ -192,6 +192,7 @@ class _AccordionPageState extends State<AccordionPage> {
         .where("senderEmail", isEqualTo: _user.email)
         .where("status", isEqualTo: "Approved")
         .snapshots();
+        
     return SizedBox(
       height: 160,
       child: StreamBuilder(
@@ -475,7 +476,7 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                                 .frontCameraPic.value;
 
                                             final filename =
-                                                path.basename(img.path);
+                                                document.id;
                                             iofile.File imageFile =
                                                 iofile.File(img.path);
                                             try {
@@ -513,7 +514,7 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                                 .backCameraPic.value;
 
                                             final filename =
-                                                path.basename(img.path);
+                                                document.id;
                                             iofile.File imageFile =
                                                 iofile.File(img.path);
                                             try {
