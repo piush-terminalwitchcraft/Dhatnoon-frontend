@@ -1,9 +1,11 @@
-import 'dart:html';
 import 'dart:io' as iofile;
 import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:components/agora_services/audio_streaming.dart';
+import 'package:components/agora_services/front_camera_streaming.dart';
+import 'package:components/agora_services/rear_camera_streaming.dart';
 import 'package:components/services/front_camera_pic.dart';
 import 'package:components/state_management/iconChange.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -236,9 +238,20 @@ class _AccordionPageState extends State<AccordionPage> {
                               latitude: double.parse(document['latitude']),
                               longitude: double.parse(document['longitude']),
                             ));
-                          } else if (document['mode'] == 'Front Camera Mode') {
+                          }
+                          if (document['mode'] == 'Front Camera Mode') {
                             // Image.network(document['imgURL']);
                           }
+                          if (document['mode'] == 'Front Camera Streaming') {
+                            Get.to(FrontReciverStream());
+                          }
+                          if (document['mode'] == 'Back Camera Streaming') {
+                            Get.to(BackRecieveStream());
+                          }
+                          if (document['mode'] == 'Audio Live Streaming') {
+                            Get.to(AudioRecieveStream());
+                          }
+
                         },
                       ),
                     ),
@@ -438,7 +451,8 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                                   value.longitude.toString(),
                                             });
                                           });
-                                        } else if (document['mode'] ==
+                                        }
+                                        if (document['mode'] ==
                                             'Front Camera Mode') {
                                           // call front camera file ps:- I didont got the function inside class where XFile is returned;
                                           XFile? img = null;
@@ -469,6 +483,18 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                           }
                                           ;
                                         }
+                                        if (document['mode'] ==
+                                            'Front Camera Streaming') {
+                                          Get.to(FrontSendStream());
+                                        }
+                                        if (document['mode'] ==
+                                            'Back Camera Streaming') {
+                                              Get.to(BackSendStream());
+                                            }
+                                        if (document['mode'] ==
+                                            'Audio Live Streaming') {
+                                              Get.to(AudioSendStream());
+                                            }
                                       },
                                       child: Text("Accept ?"),
                                     ),

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class FrontCameraPic extends StatefulWidget {
   @override
   FrontCameraPicState createState() => FrontCameraPicState();
+      
 }
 
 class FrontCameraPicState extends State<FrontCameraPic> {

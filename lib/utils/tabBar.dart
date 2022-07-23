@@ -1,10 +1,12 @@
 import 'package:bouncy_widget/bouncy_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:components/agora_services/front_camera_streaming.dart';
 import 'package:components/screens/login.dart';
 import 'package:components/screens/profile.dart';
 import 'package:components/screens/settings.dart';
 import 'package:components/services/front_camera_pic.dart';
 import 'package:components/services/front_camera_recording.dart';
+import 'package:components/services/photo_page.dart';
 import 'package:components/services/rear_camera_pic.dart';
 import 'package:components/services/rear_camera_recording.dart';
 import 'package:components/utils/listWheelScrollView.dart';
@@ -162,7 +164,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       PopupMenuItem(
                         child: InkWell(
                           // onTap: () => Get.to(MapWala(latitude: 19.8064417, longitude: 72.7463952)),
-                          onTap: () => Get.to(FrontCameraPic()),
+                          onTap: () {
+                            // Get.to(FrontStream());
+                          },
                           child: const ListTile(
                             title: Text("Testing   "),
                             trailing: Icon(Icons.settings),
