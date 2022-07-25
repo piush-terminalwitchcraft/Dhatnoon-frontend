@@ -57,7 +57,7 @@ class _RearCameraRecordingState extends State<RearCameraRecording> {
       print(file);
       print(file.path);
       print("recording stopped");
-      Get.to(VideoPage(filePath: file.path));
+
     } else {
       await _cameraController.prepareForVideoRecording();
       await _cameraController.startVideoRecording();
@@ -68,7 +68,7 @@ class _RearCameraRecordingState extends State<RearCameraRecording> {
 
   void callMethod() {
     _recordVideo();
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 10), () {
       _recordVideo();
     });
   }

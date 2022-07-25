@@ -9,6 +9,7 @@ import 'package:components/services/front_camera_recording.dart';
 import 'package:components/services/photo_page.dart';
 import 'package:components/services/rear_camera_pic.dart';
 import 'package:components/services/rear_camera_recording.dart';
+import 'package:components/services/video_page.dart';
 import 'package:components/utils/listWheelScrollView.dart';
 import 'package:components/utils/smart_accordion.dart';
 import 'package:curved_drawer_fork/curved_drawer_fork.dart';
@@ -166,8 +167,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           // onTap: () => Get.to(MapWala(latitude: 19.8064417, longitude: 72.7463952)),
                           onTap: () {
                             print("weirdooooooo");
-                            Get.to(DisplayPictureScreen(
-                                imagePath: "https://firebasestorage.googleapis.com/v0/b/dhatnoon-backend.appspot.com/o/CAP5565661985540565896.jpg?alt=media&token=4b202f67-d140-4ff5-a5b1-47603a8313d1", cameraMode: "front"));
+                            Get.to(VideoPage(videoLink: "https://firebasestorage.googleapis.com/v0/b/dhatnoon-backend.appspot.com/o/REC5113461629287897271.mp4?alt=media&token=d052227f-c24e-47e1-ba99-f64bfc7da50e"));
                           },
                           child: const ListTile(
                             title: Text("Testing   "),
