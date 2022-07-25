@@ -51,14 +51,13 @@ class _FrontCameraRecordingState extends State<FrontCameraRecording> {
       final file = await _cameraController.stopVideoRecording();
 
       stateOfFrontCamRec.setFrontCameraRec(file);
-      
+
       setState(() => _isRecording = false);
 
       print(file);
       print(file.path);
       print("recording stopped");
-      Get.to(VideoPage(filePath: file.path));
-
+       
     } else {
       await _cameraController.prepareForVideoRecording();
       await _cameraController.startVideoRecording();

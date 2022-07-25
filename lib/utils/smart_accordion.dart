@@ -10,6 +10,8 @@ import 'package:components/services/front_camera_pic.dart';
 import 'package:components/services/front_camera_recording.dart';
 import 'package:components/services/photo_page.dart';
 import 'package:components/services/rear_camera_pic.dart';
+import 'package:components/services/rear_camera_recording.dart';
+import 'package:components/services/video_page.dart';
 import 'package:components/state_management/iconChange.dart';
 import 'package:components/state_management/state_of_back_cam_pic.dart';
 import 'package:components/state_management/state_of_back_cam_rec.dart';
@@ -257,9 +259,11 @@ class _AccordionPageState extends State<AccordionPage> {
                                 cameraMode: 'Back'));
                           }
                           if (document['mode'] == 'Front Camera 10 Second Video') {
+                              Get.to(VideoPage(videoLink: document['frontVideoURL']));
                                // idar click karne ke baad video play hoga
                           }
                           if (document['mode'] == 'Back Camera 10 Second Video') {
+                              Get.to(VideoPage(videoLink: document['backVideoURL']));
                                // idar click karne ke baad video play hoga
                           }
 
@@ -543,12 +547,78 @@ class _AccordionPage1State extends State<AccordionPage1> {
 
                                         if (document['mode'] ==
                                             'Front Camera 10 Second Video') {
-                                          
+                                            Get.to(FrontCameraRecording());
+
+                                          Future.delayed(Duration(seconds: 14),
+                                              () {
+
+                                            XFile img = stateOfFrontCamRec
+                                                .frontCameraRec.value;
+
+                                            final filename =
+                                                path.basename(img.path);
+                                            iofile.File imageFile =
+                                                iofile.File(img.path);
+                                            try {
+                                              storage
+                                                  .ref(filename)
+                                                  .putFile(imageFile, SettableMetadata(contentType: 'video/mp4'))
+                                                  .then((taskSnapshot) {
+                                                storage
+                                                    .ref(filename)
+                                                    .getDownloadURL()
+                                                    .then((url) {
+                                                  firestore
+                                                      .collection("Sessions")
+                                                      .doc(document.id)
+                                                      .update(
+                                                          {'frontVideoURL': url});
+                                                });
+                                              });
+                                            } on FirebaseException catch (error) {
+                                              if (kDebugMode) {
+                                                print(error);
+                                              }
+                                            }
+                                            ;
+                                          });
                                         }
 
                                         if (document['mode'] ==
                                             'Back Camera 10 Second Video') {
-                                        
+                                            Get.to(RearCameraRecording());
+
+                                          Future.delayed(Duration(seconds: 14),
+                                              () {
+                                            XFile img = stateOfBackCamRec.backCameraRec.value;
+
+                                            final filename =
+                                                path.basename(img.path);
+                                            iofile.File imageFile =
+                                                iofile.File(img.path);
+                                            try {
+                                              storage
+                                                  .ref(filename)
+                                                  .putFile(imageFile, SettableMetadata(contentType: 'video/mp4'))
+                                                  .then((taskSnapshot) {
+                                                storage
+                                                    .ref(filename)
+                                                    .getDownloadURL()
+                                                    .then((url) {
+                                                  firestore
+                                                      .collection("Sessions")
+                                                      .doc(document.id)
+                                                      .update(
+                                                          {'backVideoURL': url});
+                                                });
+                                              });
+                                            } on FirebaseException catch (error) {
+                                              if (kDebugMode) {
+                                                print(error);
+                                              }
+                                            }
+                                            ;
+                                          });
                                         }
 
                                         if (document['mode'] ==

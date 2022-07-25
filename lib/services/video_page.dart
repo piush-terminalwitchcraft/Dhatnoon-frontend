@@ -4,61 +4,104 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-// videos from firebase need to be fetched and played using video_player
+class VideoPage extends StatefulWidget{
 
-class VideoPage extends StatefulWidget {
-  final String filePath;
+  VideoPage({required this.videoLink});
 
-  const VideoPage({Key? key, required this.filePath}) : super(key: key);
+  final String videoLink;
 
   @override
   _VideoPageState createState() => _VideoPageState();
 }
 
 class _VideoPageState extends State<VideoPage> {
-  late VideoPlayerController _videoPlayerController;
+  
+  late VideoPlayerController controller;
 
   @override
-  void dispose() {
-    _videoPlayerController.dispose();
-    super.dispose();
+  void initState() {
+    loadVideoPlayer();
+    super.initState();
   }
 
-  Future _initVideoPlayer() async {
-    _videoPlayerController = VideoPlayerController.file(File(widget.filePath));
-    await _videoPlayerController.initialize();
-    await _videoPlayerController.setLooping(false);
-    await _videoPlayerController.play();
+  loadVideoPlayer(){
+     controller = VideoPlayerController.network(widget.videoLink);
+     controller.addListener(() {
+        setState(() {});
+     });
+    controller.initialize().then((value){
+        setState(() {});
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Preview'),
-        elevation: 0,
-        backgroundColor: Colors.black26,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.check),
-            onPressed: () {
-              print('do something with the file');
-              Get.off(MyHomePage());
-            },
-          )
-        ],
-      ),
-      extendBodyBehindAppBar: true,
-      body: FutureBuilder(
-        future: _initVideoPlayer(),
-        builder: (context, state) {
-          if (state.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return VideoPlayer(_videoPlayerController);
-          }
-        },
-      ),
-    );
+    return  Scaffold(
+          appBar: AppBar( 
+              title: Text("Front Camera video"),
+              backgroundColor: Colors.redAccent,
+          ),
+          body: Container( 
+            child: Column(
+              children:[
+                  Expanded(
+                    child: AspectRatio( 
+                      aspectRatio: controller.value.aspectRatio,
+                       child: VideoPlayer(controller),
+                    ),
+                  ),
+
+                  Container( //duration of video
+                     child: Text("Total Duration: " + controller.value.duration.toString()),
+                  ),
+
+                  Container(
+                      child: VideoProgressIndicator(
+                        controller, 
+                        allowScrubbing: true,
+                        colors:VideoProgressColors(
+                            backgroundColor: Colors.redAccent,
+                            playedColor: Colors.green,
+                            bufferedColor: Colors.purple,
+                        )
+                      )
+                  ),
+
+                  Container(
+                     child: Row(
+                         children: [
+                            IconButton(
+                                onPressed: (){
+                                  if(controller.value.isPlaying){
+                                    controller.pause();
+                                  }else{
+                                    controller.play();
+                                  }
+
+                                  setState(() {
+                                    
+                                  });
+                                }, 
+                                icon:Icon(controller.value.isPlaying?Icons.pause:Icons.play_arrow)
+                           ),
+
+                           IconButton(
+                                onPressed: (){
+                                  controller.seekTo(Duration(seconds: 0));
+
+                                  setState(() {
+                                    
+                                  });
+                                }, 
+                                icon:Icon(Icons.stop)
+                           )
+                         ],
+                     ),
+                  )
+              ]
+            )
+          ),
+       );
   }
 }
