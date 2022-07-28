@@ -275,7 +275,7 @@ class _AccordionPageState extends State<AccordionPage> {
                             Get.to(BackRecieveStream());
                           }
                           if (document['mode'] == 'Audio Live Streaming') {
-                            Get.to(AudioRecieveStream());
+                            Get.to(AudioStreaming(documentID: document.id));
                           }
                         },
                       ),
@@ -632,7 +632,19 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                         }
                                         if (document['mode'] ==
                                             'Audio Live Streaming') {
-                                          Get.to(AudioSendStream());
+                                          Get.to(AudioStreaming(documentID: document.id))?.then((path) {
+                                             print(path);
+                                             iofile.File audiofile = iofile.File(path);
+                                             storage.ref(document.id).putFile(audiofile,SettableMetadata(contentType: 'audio/m4a',customMetadata: <String, String>{'file': 'audio'},)).then((TaskSnapshot taskSnapshot){
+                                                if(taskSnapshot.state == TaskState.success) {
+                                                  print("Uploaded to firebase successfully");
+                                                }
+                                                else {
+                                                  taskSnapshot.printError();
+                                                }
+                                             });
+                                             
+                                          });
                                         }
                                       },
                                       child: Text("Accept ?"),

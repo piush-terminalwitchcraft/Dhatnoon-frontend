@@ -53,9 +53,11 @@ dependencies:
   google_maps_flutter: ^2.1.8
   firebase_storage: 
   agora_uikit: ^1.0.2
-
+  agora_rtc_engine: ^5.2.0
+  permission_handler: ^9.2.0
   camera: ^0.10.0
   video_player: ^2.4.5
+  record: ^4.3.2
 
 dev_dependencies:
   flutter_test:
