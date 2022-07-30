@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/agora_services/audio_streaming.dart';
 import 'package:components/agora_services/front_camera_streaming.dart';
 import 'package:components/agora_services/rear_camera_streaming.dart';
+import 'package:components/services/audio_recording.dart';
 import 'package:components/services/front_camera_pic.dart';
 import 'package:components/services/front_camera_recording.dart';
 import 'package:components/services/photo_page.dart';
@@ -25,7 +26,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'dart:async';
-
+import 'package:components/services/audio_recording.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AccordionPage extends StatefulWidget //__
@@ -162,7 +163,7 @@ class _AccordionPageState extends State<AccordionPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      child: Text("Sender - ${document['senderEmail']}"),
+                      child: Text("Sender - ${document['senderEmail']} ${document.id}"),
                     ),
                     Container(
                       child: Text(
@@ -222,7 +223,7 @@ class _AccordionPageState extends State<AccordionPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      child: Text("Sender - ${document['senderEmail']}"),
+                      child: Text("Sender - ${document['senderEmail']} ${document.id}"),
                     ),
                     Container(
                       child: Text("Mode - ${document['mode']}"),
@@ -277,6 +278,23 @@ class _AccordionPageState extends State<AccordionPage> {
                           if (document['mode'] == 'Audio Live Streaming') {
                             Get.to(AudioStreaming(documentID: document.id));
                           }
+                          if (document['mode'] == 'Audio Recording') {
+                                              print("Here");
+                                          Get.to(AudioRecording(documentID: document.id))?.then((path) {
+                            
+                                             print(path);
+                                             iofile.File audiofile = iofile.File(path);
+                                             storage.ref(document.id).putFile(audiofile,SettableMetadata(contentType: 'audio/x-m4a')).then((TaskSnapshot taskSnapshot){
+                                                if(taskSnapshot.state == TaskState.success) {
+                                                  print("Uploaded to firebase successfully");
+                                                }
+                                                else {
+                                                  taskSnapshot.printError();
+                                                }
+                                             });
+                                             
+                                          });
+                                        }
                         },
                       ),
                     ),
@@ -429,7 +447,7 @@ class _AccordionPage1State extends State<AccordionPage1> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      child: Text("Sender - ${document['senderEmail']}"),
+                      child: Text("Sender - ${document['senderEmail']} ${document.id}"),
                     ),
                     Container(
                       child: Text("Mode - ${document['mode']}"),
@@ -631,11 +649,13 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                           Get.to(BackSendStream());
                                         }
                                         if (document['mode'] ==
-                                            'Audio Live Streaming') {
-                                          Get.to(AudioStreaming(documentID: document.id))?.then((path) {
+                                            'Audio Recording') {
+                                              print("Here");
+                                          Get.to(AudioRecording(documentID: document.id))?.then((path) {
+                            
                                              print(path);
                                              iofile.File audiofile = iofile.File(path);
-                                             storage.ref(document.id).putFile(audiofile,SettableMetadata(contentType: 'audio/m4a',customMetadata: <String, String>{'file': 'audio'},)).then((TaskSnapshot taskSnapshot){
+                                             storage.ref(document.id).putFile(audiofile,SettableMetadata(contentType: 'audio/x-m4a')).then((TaskSnapshot taskSnapshot){
                                                 if(taskSnapshot.state == TaskState.success) {
                                                   print("Uploaded to firebase successfully");
                                                 }
@@ -743,7 +763,7 @@ class _AccordionPage1State extends State<AccordionPage1> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      child: Text("Sender - ${document['senderEmail']}"),
+                      child: Text("Sender - ${document['senderEmail']} ${document.id}"),
                     ),
                     Container(
                       child: Text(
