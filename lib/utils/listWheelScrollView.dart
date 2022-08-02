@@ -13,7 +13,7 @@ class ListWheel extends StatefulWidget {
 class _ListWheelState extends State<ListWheel> {
   final _scrollController = FixedExtentScrollController();
   static const double _itemHeight = 100;
-  static const int _itemCount = 8;
+  static const int _itemCount = 9;
 
   @override
   Widget build(BuildContext context) {

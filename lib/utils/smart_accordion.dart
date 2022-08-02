@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/agora_services/audio_streaming.dart';
 import 'package:components/agora_services/front_camera_streaming.dart';
 import 'package:components/agora_services/rear_camera_streaming.dart';
+import 'package:components/services/audio_player.dart';
+import 'package:components/services/audio_record.dart';
 import 'package:components/services/front_camera_pic.dart';
 import 'package:components/services/front_camera_recording.dart';
 import 'package:components/services/photo_page.dart';
@@ -258,13 +260,17 @@ class _AccordionPageState extends State<AccordionPage> {
                                 imagePath: document['backImgURL'],
                                 cameraMode: 'Back'));
                           }
-                          if (document['mode'] == 'Front Camera 10 Second Video') {
-                              Get.to(VideoPage(videoLink: document['frontVideoURL']));
-                               // idar click karne ke baad video play hoga
+                          if (document['mode'] ==
+                              'Front Camera 10 Second Video') {
+                            Get.to(VideoPage(
+                                videoLink: document['frontVideoURL']));
+                            // idar click karne ke baad video play hoga
                           }
-                          if (document['mode'] == 'Back Camera 10 Second Video') {
-                              Get.to(VideoPage(videoLink: document['backVideoURL']));
-                               // idar click karne ke baad video play hoga
+                          if (document['mode'] ==
+                              'Back Camera 10 Second Video') {
+                            Get.to(
+                                VideoPage(videoLink: document['backVideoURL']));
+                            // idar click karne ke baad video play hoga
                           }
 
                           if (document['mode'] == 'Front Camera Streaming') {
@@ -275,6 +281,9 @@ class _AccordionPageState extends State<AccordionPage> {
                           }
                           if (document['mode'] == 'Audio Live Streaming') {
                             Get.to(AudioRecieveStream());
+                          }
+                          if (document['mode'] == '10 Second Audio Recording') {
+                            Get.to(AudioPlayerPro(audioURL: document['audioURL']));
                           }
                         },
                       ),
@@ -547,11 +556,10 @@ class _AccordionPage1State extends State<AccordionPage1> {
 
                                         if (document['mode'] ==
                                             'Front Camera 10 Second Video') {
-                                            Get.to(FrontCameraRecording());
+                                          Get.to(FrontCameraRecording());
 
                                           Future.delayed(Duration(seconds: 14),
                                               () {
-
                                             XFile img = stateOfFrontCamRec
                                                 .frontCameraRec.value;
 
@@ -562,7 +570,11 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                             try {
                                               storage
                                                   .ref(filename)
-                                                  .putFile(imageFile, SettableMetadata(contentType: 'video/mp4'))
+                                                  .putFile(
+                                                      imageFile,
+                                                      SettableMetadata(
+                                                          contentType:
+                                                              'video/mp4'))
                                                   .then((taskSnapshot) {
                                                 storage
                                                     .ref(filename)
@@ -571,8 +583,9 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                                   firestore
                                                       .collection("Sessions")
                                                       .doc(document.id)
-                                                      .update(
-                                                          {'frontVideoURL': url});
+                                                      .update({
+                                                    'frontVideoURL': url
+                                                  });
                                                 });
                                               });
                                             } on FirebaseException catch (error) {
@@ -586,11 +599,12 @@ class _AccordionPage1State extends State<AccordionPage1> {
 
                                         if (document['mode'] ==
                                             'Back Camera 10 Second Video') {
-                                            Get.to(RearCameraRecording());
+                                          Get.to(RearCameraRecording());
 
                                           Future.delayed(Duration(seconds: 14),
                                               () {
-                                            XFile img = stateOfBackCamRec.backCameraRec.value;
+                                            XFile img = stateOfBackCamRec
+                                                .backCameraRec.value;
 
                                             final filename =
                                                 path.basename(img.path);
@@ -599,7 +613,11 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                             try {
                                               storage
                                                   .ref(filename)
-                                                  .putFile(imageFile, SettableMetadata(contentType: 'video/mp4'))
+                                                  .putFile(
+                                                      imageFile,
+                                                      SettableMetadata(
+                                                          contentType:
+                                                              'video/mp4'))
                                                   .then((taskSnapshot) {
                                                 storage
                                                     .ref(filename)
@@ -608,8 +626,9 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                                   firestore
                                                       .collection("Sessions")
                                                       .doc(document.id)
-                                                      .update(
-                                                          {'backVideoURL': url});
+                                                      .update({
+                                                    'backVideoURL': url
+                                                  });
                                                 });
                                               });
                                             } on FirebaseException catch (error) {
@@ -632,6 +651,50 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                         if (document['mode'] ==
                                             'Audio Live Streaming') {
                                           Get.to(AudioSendStream());
+                                        }
+                                        if (document['mode'] ==
+                                            '10 Second Audio Recording') {
+                                          Get.to(AudioRecorder(
+                                                  documentID: document.id))
+                                              ?.then((path) {
+                                            print(path);
+                                            iofile.File audiofile =
+                                                iofile.File(path);
+
+                                            storage
+                                                .ref(document.id + ".m4a")
+                                                .putFile(
+                                                    audiofile,
+                                                    SettableMetadata(
+                                                      contentType:
+                                                          'audio/x-m4a',
+                                                      customMetadata: <String,
+                                                          String>{
+                                                        'file': 'audio'
+                                                      },
+                                                    ))
+                                                .then((TaskSnapshot
+                                                    taskSnapshot) {
+                                              if (taskSnapshot.state ==
+                                                  TaskState.success) {
+                                                print(
+                                                    "Uploaded to firebase successfully");
+                                                storage
+                                                    .ref(document.id + ".m4a")
+                                                    .getDownloadURL()
+                                                    .then((url) {
+                                                  firestore
+                                                      .collection("Sessions")
+                                                      .doc(document.id)
+                                                      .update({
+                                                    'audioURL': url
+                                                  });
+                                                });
+                                              } else {
+                                                taskSnapshot.printError();
+                                              }
+                                            });
+                                          });
                                         }
                                       },
                                       child: Text("Accept ?"),

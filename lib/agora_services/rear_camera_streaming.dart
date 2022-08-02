@@ -17,7 +17,7 @@ class _BackSendStreamState extends State<BackSendStream> {
         appId: "63a29f76b5704dd0bf01316fc9f8f736",
         channelName: "test",
         tempToken:
-            "00663a29f76b5704dd0bf01316fc9f8f736IADsvkD2CctBCgVvmx/oBNDCTk8vSJ/6lVgPMR+4aAoRhAx+f9gAAAAAEABsSV6NMtHbYgEAAQAx0dti"
+            "00663a29f76b5704dd0bf01316fc9f8f736IABEIQx/N9ObwJd03RWAfv1ktuOE/rn+6ffUklp23cWfzAx+f9gAAAAAEABUJOp9oEHqYgEAAQCfQepi"
         // username: "user",
         ),
   );
@@ -116,7 +116,7 @@ class _BackRecieveStreamState extends State<BackRecieveStream> {
         appId: "63a29f76b5704dd0bf01316fc9f8f736",
         channelName: "test",
         tempToken:
-            "00663a29f76b5704dd0bf01316fc9f8f736IADsvkD2CctBCgVvmx/oBNDCTk8vSJ/6lVgPMR+4aAoRhAx+f9gAAAAAEABsSV6NMtHbYgEAAQAx0dti"
+            "00663a29f76b5704dd0bf01316fc9f8f736IABEIQx/N9ObwJd03RWAfv1ktuOE/rn+6ffUklp23cWfzAx+f9gAAAAAEABUJOp9oEHqYgEAAQCfQepi"
         // username: "user",
         ),
   );

@@ -17,7 +17,7 @@ class _AudioSendStreamState extends State<AudioSendStream> {
         appId: "63a29f76b5704dd0bf01316fc9f8f736",
         channelName: "test",
         tempToken:
-            "006843077704d2f4d19a7ed336afaa0c2caIAAt96xdhOtfxpjPA0MhvwTZ3tKId0pf6xNXrT5XAOj1/wx+f9gAAAAAEABOlix6qtHbYgEAAQA6jtpi"
+            "00663a29f76b5704dd0bf01316fc9f8f736IABEIQx/N9ObwJd03RWAfv1ktuOE/rn+6ffUklp23cWfzAx+f9gAAAAAEABUJOp9oEHqYgEAAQCfQepi"
         // username: "user",
         ),
   );
@@ -122,7 +122,7 @@ class _AudioRecieveStreamState extends State<AudioRecieveStream> {
         appId: "63a29f76b5704dd0bf01316fc9f8f736",
         channelName: "test",
         tempToken:
-            "006843077704d2f4d19a7ed336afaa0c2caIAAt96xdhOtfxpjPA0MhvwTZ3tKId0pf6xNXrT5XAOj1/wx+f9gAAAAAEABOlix6qtHbYgEAAQA6jtpi"
+            "00663a29f76b5704dd0bf01316fc9f8f736IABEIQx/N9ObwJd03RWAfv1ktuOE/rn+6ffUklp23cWfzAx+f9gAAAAAEABUJOp9oEHqYgEAAQCfQepi"
         // username: "user",
         ),
   );
