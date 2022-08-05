@@ -266,7 +266,7 @@ class _LogInState extends State<LogIn> {
                   ),
                   color: Colors.blue,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(50, 18, 50, 18),
+                    padding: const EdgeInsets.fromLTRB(60, 18, 60, 18),
                     child: Text(
                       "G",
                       style: TextStyle(
@@ -289,7 +289,7 @@ class _LogInState extends State<LogIn> {
                   ),
                   color: Colors.blue.shade900,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(50, 18, 50, 18),
+                    padding: const EdgeInsets.fromLTRB(60, 18, 60, 18),
                     child: Text(
                       "f",
                       style: TextStyle(
