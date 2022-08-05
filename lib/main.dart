@@ -16,7 +16,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    // options: DefaultFirebaseOptions.currentPlatform,
+);
 
   final cameras = await availableCameras();
   final front_Camera = cameras[1];  // front camera

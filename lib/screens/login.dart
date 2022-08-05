@@ -49,7 +49,7 @@ class _LogInState extends State<LogIn> {
           children: [
             FadeInUp(
               child: Align(
-                alignment: const Alignment(-0.75, -0.8),
+                alignment: const Alignment(-0.85, -0.8),
                 child: InkWell(
                   onTap: () =>
                       Get.to(SignUp(), transition: Transition.downToUp),
@@ -63,7 +63,7 @@ class _LogInState extends State<LogIn> {
             ),
             FadeInUp(
               child: Align(
-                alignment: Alignment(0.75, -0.81),
+                alignment: Alignment(0.85, -0.8),
                 child: InkWell(
                   onTap: () =>
                       Get.to(SignUp(), transition: Transition.downToUp),
@@ -88,7 +88,7 @@ class _LogInState extends State<LogIn> {
             ),
             FadeInUp(
               child: const Align(
-                alignment: Alignment(-0.55, -0.55),
+                alignment: Alignment(-0.85, -0.55),
                 child: Text(
                   "Welcome\nBack",
                   style: TextStyle(
@@ -106,7 +106,7 @@ class _LogInState extends State<LogIn> {
                 child: Container(
                   alignment: Alignment.center,
                   width: 320,
-                  height: 80,
+                  height: 85,
                   child: Card(
                     elevation: 10,
                     shape: RoundedRectangleBorder(
@@ -154,6 +154,7 @@ class _LogInState extends State<LogIn> {
                   alignment: Alignment.center,
                   width: 320,
                   height: 80,
+                  margin: EdgeInsets.only(top: 20),
                   child: Card(
                     elevation: 10,
                     borderOnForeground: false,
@@ -198,7 +199,7 @@ class _LogInState extends State<LogIn> {
             FadeInUp(
               delay: Duration(milliseconds: 1100),
               child: Align(
-                alignment: Alignment(0.42, 0.07),
+                alignment: Alignment(0.42, 0.12),
                 child: Text(
                   "Forgot your Password?",
                   style: TextStyle(
@@ -210,7 +211,7 @@ class _LogInState extends State<LogIn> {
               duration: Duration(milliseconds: 500),
               delay: Duration(milliseconds: 1000),
               child: Align(
-                alignment: Alignment(0.0, 0.22),
+                alignment: Alignment(0.0, 0.28),
                 child: InkWell(
                   onTap: () => signIn(),
                   child: Card(
@@ -248,7 +249,7 @@ class _LogInState extends State<LogIn> {
             FadeInUp(
               delay: Duration(milliseconds: 1100),
               child: Align(
-                alignment: Alignment(0.0, 0.35),
+                alignment: Alignment(0.0, 0.38),
                 child: Text(
                   "Or continue with",
                   style: TextStyle(fontSize: 13, color: Colors.white),
@@ -258,14 +259,14 @@ class _LogInState extends State<LogIn> {
             FadeInUp(
               delay: Duration(milliseconds: 1150),
               child: Align(
-                alignment: Alignment(-0.7, 0.55),
+                alignment: Alignment(-0.73, 0.55),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   color: Colors.blue,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(70, 18, 70, 18),
+                    padding: const EdgeInsets.fromLTRB(50, 18, 50, 18),
                     child: Text(
                       "G",
                       style: TextStyle(
@@ -288,7 +289,7 @@ class _LogInState extends State<LogIn> {
                   ),
                   color: Colors.blue.shade900,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(70, 18, 70, 18),
+                    padding: const EdgeInsets.fromLTRB(50, 18, 50, 18),
                     child: Text(
                       "f",
                       style: TextStyle(
