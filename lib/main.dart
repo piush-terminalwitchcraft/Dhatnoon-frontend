@@ -5,7 +5,7 @@ import 'package:components/state_management/state_of_back_cam_pic.dart';
 import 'package:components/state_management/state_of_back_cam_rec.dart';
 import 'package:components/state_management/state_of_front_cam_pic.dart';
 import 'package:components/state_management/state_of_front_cam_rec.dart';
-
+import 'package:components/firebase_options.dart';
 import 'package:components/utils/tabBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,17 +14,14 @@ import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    // options: DefaultFirebaseOptions.currentPlatform,
-);
-
-  final cameras = await availableCameras();
-  final front_Camera = cameras[1];  // front camera
-  final rear_Camera = cameras[0];
-
-  
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // final cameras = await availableCameras();
+  // final front_Camera = cameras[1];  // front camera
+  // final rear_Camera = cameras[0];
     // rear camera
   runApp(MyApp());
 }
@@ -59,21 +56,25 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    
+    print("Error is generated here");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return MyHomePage();
-            } else if(snapshot.connectionState == ConnectionState.waiting){
-              return Center(child: CircularProgressIndicator());
-            } else if(snapshot.hasError){
-              return Center(child: Text("Something went wrong"));
-            }
-            else {
-              return const LogIn();
-            }
+            // if (snapshot.hasData) {
+            //   return MyHomePage();
+            // } else if(snapshot.connectionState == ConnectionState.waiting){
+            //   return Center(child: CircularProgressIndicator());
+            // } else if(snapshot.hasError){
+            //   return Center(child: Text("Something went wrong"));
+            // }
+            // else {
+            //   return  LogIn();
+            // }
+            return LogIn();
           }),
     );
   }
