@@ -4,6 +4,8 @@ import 'package:components/agora_services/front_camera_streaming.dart';
 import 'package:components/screens/login.dart';
 import 'package:components/screens/profile.dart';
 import 'package:components/screens/settings.dart';
+import 'package:components/services/audio_player.dart';
+import 'package:components/services/audio_record.dart';
 import 'package:components/services/front_camera_pic.dart';
 import 'package:components/services/front_camera_recording.dart';
 import 'package:components/services/photo_page.dart';
@@ -22,6 +24,9 @@ import 'package:get/get.dart';
 import 'package:simple_animated_icon/simple_animated_icon.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+import 'dart:io' as iofile;
+import 'package:firebase_storage/firebase_storage.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -114,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   var _phoneNumber;
 
   bool dataUploaded = true;
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -122,36 +128,37 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         length: 3,
         initialIndex: 1,
         child: Scaffold(
-          drawer: VisibilityDetector(
-            key: const Key('my-widget-key'),
-            onVisibilityChanged: (visibilityInfo) {
-              var visiblePercentage = visibilityInfo.visibleFraction * 100;
+          drawer: Placeholder(),
+          // drawer: VisibilityDetector(
+          //   key: const Key('my-widget-key'),
+          //   onVisibilityChanged: (visibilityInfo) {
+          //     var visiblePercentage = visibilityInfo.visibleFraction * 100;
 
-              // if drawer not opened then route to specific pages based
-              // on the index value
-              if (visiblePercentage == 0) {
-                if (index == 0) Get.to(MyHomePage());
-                if (index == 1) Get.to(const ProfilePage());
-                if (index == 2) Get.to(const LogIn());
-              }
-            },
-            // Actual drawer implementation
-            child: Container(
-              child: CurvedDrawer(
-                index: index,
-                width: 65,
-                color: Color.fromARGB(255, 69, 3, 130),
-                buttonBackgroundColor: Color(0xff831d8a),
-                labelColor: Colors.white,
-                items: _drawerItems,
-                onTap: (newIndex) {
-                  setState(() {
-                    index = newIndex;
-                  });
-                },
-              ),
-            ),
-          ),
+          //     // if drawer not opened then route to specific pages based
+          //     // on the index value
+          //     if (visiblePercentage == 0) {
+          //       if (index == 0) Get.to(MyHomePage());
+          //       if (index == 1) Get.to(const ProfilePage());
+          //       if (index == 2) Get.to(const LogIn());
+          //     }
+          //   },
+          //   // Actual drawer implementation
+          //   child: Container(
+          //     child: CurvedDrawer(
+          //       index: index,
+          //       width: 65,
+          //       color: Color.fromARGB(255, 69, 3, 130),
+          //       buttonBackgroundColor: Color(0xff831d8a),
+          //       labelColor: Colors.white,
+          //       items: _drawerItems,
+          //       onTap: (newIndex) {
+          //         setState(() {
+          //           index = newIndex;
+          //         });
+          //       },
+          //     ),
+          //   ),
+          // ),
           appBar: AppBar(
             actions: [
               PopupMenuButton<String>(
@@ -166,8 +173,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         child: InkWell(
                           // onTap: () => Get.to(MapWala(latitude: 19.8064417, longitude: 72.7463952)),
                           onTap: () {
-                            print("weirdooooooo");
-                            Get.to(VideoPage(videoLink: "https://firebasestorage.googleapis.com/v0/b/dhatnoon-backend.appspot.com/o/REC5113461629287897271.mp4?alt=media&token=d052227f-c24e-47e1-ba99-f64bfc7da50e"));
+                            Get.to(AudioPlayerPro(audioURL: "https://firebasestorage.googleapis.com/v0/b/dhatnoon-backend.appspot.com/o/tanmay_bhai_ka_luck.m4a?alt=media&token=1470f2d8-480d-44b0-abac-f833930c9443"));
                           },
                           child: const ListTile(
                             title: Text("Testing   "),

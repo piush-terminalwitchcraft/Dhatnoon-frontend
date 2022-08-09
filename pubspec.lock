@@ -528,6 +528,7 @@ packages:
     source: hosted
     version: "2.1.7"
   path_provider_macos:
+
     dependency: transitive
     description:
       name: path_provider_macos
