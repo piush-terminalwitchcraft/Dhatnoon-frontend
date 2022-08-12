@@ -14,6 +14,8 @@ import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -21,6 +23,22 @@ Future main() async {
   final cameras = await availableCameras();
   final front_Camera = cameras[1];  // front camera
   final rear_Camera = cameras[0];
+
+  AwesomeNotifications().initialize(
+     null, 
+     [            // notification icon 
+        NotificationChannel(
+            channelGroupKey: 'basic_test',
+            channelKey: 'basic',
+            channelName: 'Basic notifications',
+            channelDescription: 'Notification channel for basic tests',
+            channelShowBadge: true,
+            importance: NotificationImportance.High,
+            enableVibration: false,
+        ),
+
+     ]
+  );
 
   
     // rear camera

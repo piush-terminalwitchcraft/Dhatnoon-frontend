@@ -332,6 +332,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             centerTitle: true,
           ),
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               Text("ok"),
               AccordionPage(),

@@ -1,6 +1,7 @@
 import 'dart:io' as iofile;
 import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/agora_services/audio_streaming.dart';
@@ -197,7 +198,7 @@ class _AccordionPageState extends State<AccordionPage> {
         .where("status", isEqualTo: "Approved")
         .snapshots();
     return SizedBox(
-      height: 160,
+      height: 190,
       child: StreamBuilder(
         stream: RequestData,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -213,11 +214,11 @@ class _AccordionPageState extends State<AccordionPage> {
                 decoration: BoxDecoration(
                   boxShadow: [BoxShadow(blurRadius: 12)],
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
                   border: Border.all(color: Colors.black, width: 0.2),
                 ),
                 margin: EdgeInsets.symmetric(horizontal: 12),
-                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,9 +241,15 @@ class _AccordionPageState extends State<AccordionPage> {
                       child: Text("Phone No - ${document['ReceiverPhoneNo']}"),
                     ),
                     Container(
-                      child: InkWell(
-                        child: Text("View"),
-                        onTap: () async {
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        label: Text("View"),
+                        icon: Icon(Icons.remove_red_eye_outlined),
+                        onPressed: () async {
                           print("tap working");
                           if (document['mode'] == 'Live Geo Location') {
                             Get.to(MapWala(
@@ -283,7 +290,8 @@ class _AccordionPageState extends State<AccordionPage> {
                             Get.to(AudioRecieveStream());
                           }
                           if (document['mode'] == '10 Second Audio Recording') {
-                            Get.to(AudioPlayerPro(audioURL: document['audioURL']));
+                            Get.to(
+                                AudioPlayerPro(audioURL: document['audioURL']));
                           }
                         },
                       ),
@@ -423,15 +431,28 @@ class _AccordionPage1State extends State<AccordionPage1> {
           return ListView(
             scrollDirection: Axis.horizontal,
             children: snapshot.data!.docs.map((document) {
+              print("entered");
+              //show notification
+              AwesomeNotifications().createNotification(
+                content: NotificationContent(
+                    //simgple notification
+                    id: 123,
+                    channelKey: 'basic', //set configuration wuth key "basic"
+                    title: "From - ${document['senderEmail']}",
+                    body: "${document['senderEmail']} has requested access to ${document['mode']} mode",
+                    payload: {"name": "FlutterCampus"},
+                    autoDismissible: false,
+                    displayOnBackground: true),
+              );
               return Container(
                 decoration: BoxDecoration(
                   boxShadow: [BoxShadow(blurRadius: 12)],
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
                   border: Border.all(color: Colors.black, width: 0.2),
                 ),
                 margin: EdgeInsets.symmetric(horizontal: 12),
-                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -451,15 +472,28 @@ class _AccordionPage1State extends State<AccordionPage1> {
                           "End time - ${document['endTime_Hours']}:${document['endTime_minutes']}"),
                     ),
                     (document['status'] == 'Approved')
-                        ? Container(child: Text("Accepted"))
+                        ? Container(
+                            child: Text("Accepted",
+                                style: TextStyle(color: Colors.green.shade600)))
                         : (document['status'] == 'rejected')
-                            ? Container(child: Text("Rejected"))
+                            ? Container(
+                                child: Text("Rejected",
+                                    style:
+                                        TextStyle(color: Colors.red.shade600)))
                             : Container(
-                                width: 110,
+                                width: 235,
                                 child: Row(
                                   children: [
-                                    InkWell(
-                                      onTap: () {
+                                    ElevatedButton.icon(
+                                      label: Text("Accept"),
+                                      icon: Icon(Icons.check_circle_outline),
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                      ),
+                                      onPressed: () {
                                         firestore
                                             .collection("Sessions")
                                             .doc(document.id)
@@ -686,9 +720,8 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                                   firestore
                                                       .collection("Sessions")
                                                       .doc(document.id)
-                                                      .update({
-                                                    'audioURL': url
-                                                  });
+                                                      .update(
+                                                          {'audioURL': url});
                                                 });
                                               } else {
                                                 taskSnapshot.printError();
@@ -697,16 +730,29 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                           });
                                         }
                                       },
-                                      child: Text("Accept ?"),
                                     ),
-                                    InkWell(
-                                      onTap: () {
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    OutlinedButton.icon(
+                                      label: Text('Reject'),
+                                      icon: Icon(Icons.cancel_outlined),
+                                      style: OutlinedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        side: BorderSide(
+                                          color: Colors.purple,
+                                          width: 2,
+                                        ),
+                                      ),
+                                      onPressed: () {
                                         firestore
                                             .collection("Sessions")
                                             .doc(document.id)
                                             .update({'status': 'rejected'});
                                       },
-                                      child: Text("Reject ?"),
                                     ),
                                   ],
                                 ),
@@ -725,13 +771,9 @@ class _AccordionPage1State extends State<AccordionPage1> {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     print(serviceEnabled);
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
       return Future.error('Location services are disabled.');
     }
 
@@ -739,23 +781,14 @@ class _AccordionPage1State extends State<AccordionPage1> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
         return Future.error('Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
   }
 

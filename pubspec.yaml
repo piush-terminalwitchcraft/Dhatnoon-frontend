@@ -60,6 +60,8 @@ dependencies:
   audioplayers: ^1.0.1 
   record: ^4.3.2
 
+  awesome_notifications: ^0.6.21
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
