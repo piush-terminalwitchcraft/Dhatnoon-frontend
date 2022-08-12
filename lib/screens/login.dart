@@ -45,65 +45,57 @@ class _LogInState extends State<LogIn> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
-        body: Stack(
-          children: [
-            FadeInUp(
-              child: Align(
-                alignment: const Alignment(-0.85, -0.8),
-                child: InkWell(
-                  onTap: () =>
-                      Get.to(SignUp(), transition: Transition.downToUp),
-                  child: Icon(
-                    Icons.arrow_back_sharp,
-                    size: 30,
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-              ),
-            ),
-            FadeInUp(
-              child: Align(
-                alignment: Alignment(0.85, -0.8),
-                child: InkWell(
-                  onTap: () =>
-                      Get.to(SignUp(), transition: Transition.downToUp),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    color: Colors.grey.shade600,
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xff120032),
-                            fontWeight: FontWeight.bold),
+        body: Container( 
+          margin: EdgeInsets.fromLTRB(20, 40, 20, 40),
+          child: SingleChildScrollView( 
+
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () =>
+                          Get.to(SignUp(), transition: Transition.downToUp),
+                      child: Icon(
+                        Icons.arrow_back_sharp,
+                        size: 30,
+                        color: Colors.grey.shade600,
                       ),
                     ),
-                  ),
+                     InkWell(
+                      onTap: () =>
+                          Get.to(SignUp(), transition: Transition.downToUp),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        color: Colors.grey.shade600,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xff120032),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),),
+                  ],
                 ),
-              ),
-            ),
-            FadeInUp(
-              child: const Align(
-                alignment: Alignment(-0.85, -0.55),
-                child: Text(
+                SizedBox(height: 10,),
+                Text(
                   "Welcome\nBack",
                   style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
-              ),
-            ),
-            FadeInUp(
-              duration: Duration(milliseconds: 500),
-              // delay: Duration(milliseconds: 1000),
-              child: Align(
-                alignment: Alignment(0.0, -0.22),
-                child: Container(
+                SizedBox(height: 10,),
+                Container(
                   alignment: Alignment.center,
                   width: 320,
                   height: 85,
@@ -143,14 +135,8 @@ class _LogInState extends State<LogIn> {
                     ),
                   ),
                 ),
-              ),
-            ),
-            FadeInUp(
-              duration: Duration(milliseconds: 500),
-              delay: Duration(milliseconds: 700),
-              child: Align(
-                alignment: Alignment(0.0, -0.035),
-                child: Container(
+                SizedBox(height: 10,),
+                Container(
                   alignment: Alignment.center,
                   width: 320,
                   height: 80,
@@ -194,125 +180,198 @@ class _LogInState extends State<LogIn> {
                     color: Colors.white,
                   ),
                 ),
-              ),
-            ),
-            FadeInUp(
-              delay: Duration(milliseconds: 1100),
-              child: Align(
-                alignment: Alignment(0.42, 0.12),
-                child: Text(
+                SizedBox(height: 10,),
+
+                Text(
                   "Forgot your Password?",
                   style: TextStyle(
                       fontSize: 13, color: Color.fromARGB(255, 255, 65, 118)),
                 ),
-              ),
+                SizedBox(height: 10,),
+
+                Container(
+                      width: 320,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 120,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                color: Colors.blue,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(50, 18, 40, 18),
+                                  child: Text(
+                                    "G",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 120,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                color: Colors.blue.shade900,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(50, 18, 40, 18),
+                                  child: Text(
+                                    "f",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]),
+                    )
+
+              ],
             ),
-            FadeInUp(
-              duration: Duration(milliseconds: 500),
-              delay: Duration(milliseconds: 1000),
-              child: Align(
-                alignment: Alignment(0.0, 0.28),
-                child: InkWell(
-                  onTap: () => signIn(),
-                  child: Card(
-                    color: Colors.transparent,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        border: Border.all(
-                          color: Colors.white70,
-                        ),
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xffcf366d),
-                            Color(0xffaf44ae),
-                            Color(0xff904fe5)
-                          ],
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(135, 20, 135, 20),
-                        child: Text(
-                          "Log In",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            FadeInUp(
-              delay: Duration(milliseconds: 1100),
-              child: Align(
-                alignment: Alignment(0.0, 0.38),
-                child: Text(
-                  "Or continue with",
-                  style: TextStyle(fontSize: 13, color: Colors.white),
-                ),
-              ),
-            ),
-            FadeInUp(
-              delay: Duration(milliseconds: 1150),
-              child: Align(
-                alignment: Alignment(-0.73, 0.55),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  color: Colors.blue,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(60, 18, 60, 18),
-                    child: Text(
-                      "G",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            FadeInUp(
-              delay: Duration(milliseconds: 1200),
-              child: Align(
-                alignment: Alignment(0.7, 0.55),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  color: Colors.blue.shade900,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(60, 18, 60, 18),
-                    child: Text(
-                      "f",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            FadeInUp(
-              delay: Duration(milliseconds: 1200),
-              child: Align(
-                alignment: Alignment(0.0, 0.67),
-                child: Text(
-                  "Don't have an account? Sign up",
-                  style: TextStyle(fontSize: 13, color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
+
+
+          ),
+
+
+
+        )
+        
+        
+        
+        
+        // Stack(
+        //   children: [
+  
+ 
+        
+        //     FadeInUp(
+        //       delay: Duration(milliseconds: 1100),
+        //       child: Align(
+        //         alignment: Alignment(0.42, 0.12),
+        //          Text(
+        //           "Forgot your Password?",
+        //           style: TextStyle(
+        //               fontSize: 13, color: Color.fromARGB(255, 255, 65, 118)),
+        //         ),
+        //       ),
+        //     ),
+        //     FadeInUp(
+        //       duration: Duration(milliseconds: 500),
+        //       delay: Duration(milliseconds: 1000),
+        //       child: Align(
+        //         alignment: Alignment(0.0, 0.28),
+        //         child: InkWell(
+        //           onTap: () => signIn(),
+        //           child: Card(
+        //             color: Colors.transparent,
+        //             child: Container(
+        //               decoration: BoxDecoration(
+        //                 borderRadius: BorderRadius.all(Radius.circular(10)),
+        //                 border: Border.all(
+        //                   color: Colors.white70,
+        //                 ),
+        //                 gradient: LinearGradient(
+        //                   colors: [
+        //                     Color(0xffcf366d),
+        //                     Color(0xffaf44ae),
+        //                     Color(0xff904fe5)
+        //                   ],
+        //                 ),
+        //               ),
+        //               child: Padding(
+        //                 padding: const EdgeInsets.fromLTRB(135, 20, 135, 20),
+        //                 child: Text(
+        //                   "Log In",
+        //                   style: TextStyle(
+        //                     color: Colors.white,
+        //                     fontWeight: FontWeight.bold,
+        //                     fontSize: 12,
+        //                   ),
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //     FadeInUp(
+        //       delay: Duration(milliseconds: 1100),
+        //       child: Align(
+        //         alignment: Alignment(0.0, 0.38),
+        //         child: Text(
+        //           "Or continue with",
+        //           style: TextStyle(fontSize: 13, color: Colors.white),
+        //         ),
+        //       ),
+        //     ),
+        //     FadeInUp(
+        //       delay: Duration(milliseconds: 1150),
+        //       child: Align(
+        //         alignment: Alignment(-0.73, 0.55),
+        //         child: Card(
+        //           shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(10),
+        //           ),
+        //           color: Colors.blue,
+        //           child: Padding(
+        //             padding: const EdgeInsets.fromLTRB(60, 18, 60, 18),
+        //             child: Text(
+        //               "G",
+        //               style: TextStyle(
+        //                 color: Colors.white,
+        //                 fontWeight: FontWeight.bold,
+        //                 fontSize: 18,
+        //               ),
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //     FadeInUp(
+        //       delay: Duration(milliseconds: 1200),
+        //       child: Align(
+        //         alignment: Alignment(0.7, 0.55),
+        //         child: Card(
+        //           shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(10),
+        //           ),
+        //           color: Colors.blue.shade900,
+        //           child: Padding(
+        //             padding: const EdgeInsets.fromLTRB(60, 18, 60, 18),
+        //             child: Text(
+        //               "f",
+        //               style: TextStyle(
+        //                   color: Colors.white,
+        //                   fontWeight: FontWeight.bold,
+        //                   fontSize: 18),
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //     FadeInUp(
+        //       delay: Duration(milliseconds: 1200),
+        //       child: Align(
+        //         alignment: Alignment(0.0, 0.67),
+        //         child: Text(
+        //           "Don't have an account? Sign up",
+        //           style: TextStyle(fontSize: 13, color: Colors.white),
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }
