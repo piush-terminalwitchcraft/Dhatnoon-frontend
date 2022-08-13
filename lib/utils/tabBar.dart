@@ -379,6 +379,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   InkWell(
                     onTap: () async {
                       var res = await Get.to(ListWheel());
+                      print(res);
                       setState(() {
                         _service = res;
                         print(_service);

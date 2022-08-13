@@ -181,7 +181,40 @@ class _LogInState extends State<LogIn> {
                   ),
                 ),
                 SizedBox(height: 10,),
+                InkWell(
+                  onTap: () => signIn(),
+                  child: Card(
+                    color: Colors.transparent,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        border: Border.all(
+                          color: Colors.white70,
+                        ),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xffcf366d),
+                            Color(0xffaf44ae),
+                            Color(0xff904fe5)
+                          ],
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(135, 20, 135, 20),
+                        child: Text(
+                          "Log In",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
 
+                SizedBox(height: 10,),
                 Text(
                   "Forgot your Password?",
                   style: TextStyle(
@@ -389,11 +422,12 @@ class _LogInState extends State<LogIn> {
           .signInWithEmailAndPassword(
               email: _emailController.text.trim(),
               password: _passwordController.text.trim())
-          .then((userCredential) {});
+          .then((userCredential) {
+            print("Success");
+              Get.to(MyHomePage());
+          });
     } on FirebaseAuthException catch (e) {
       print(e.toString());
     }
-
-    navigatorkey.currentState!.popUntil((route) => route.isFirst);
   }
 }
