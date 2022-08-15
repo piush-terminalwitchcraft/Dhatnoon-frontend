@@ -434,16 +434,24 @@ class _AccordionPage1State extends State<AccordionPage1> {
               print("entered");
               //show notification
               AwesomeNotifications().createNotification(
-                content: NotificationContent(
-                    //simgple notification
-                    id: 123,
-                    channelKey: 'basic', //set configuration wuth key "basic"
-                    title: "From - ${document['senderEmail']}",
-                    body: "${document['senderEmail']} has requested access to ${document['mode']} mode",
-                    payload: {"name": "FlutterCampus"},
-                    autoDismissible: false,
-                    displayOnBackground: true),
-              );
+                  content: NotificationContent(
+                      //simgple notification
+                      id: 123,
+                      channelKey: 'basic', //set configuration wuth key "basic"
+                      title: "From - ${document['senderEmail']}",
+                      body:
+                          "need access to \n ${document['mode']} mode",
+                      payload: {"name": "FlutterCampus"},
+                      autoDismissible: false,
+                      displayOnBackground: true,
+                      fullScreenIntent : true,
+                      ),
+                  actionButtons: [
+                    NotificationActionButton(
+                        key: "close",
+                        label: "Ok",
+                        buttonType: ActionButtonType.DisabledAction),
+                  ]);
               return Container(
                 decoration: BoxDecoration(
                   boxShadow: [BoxShadow(blurRadius: 12)],

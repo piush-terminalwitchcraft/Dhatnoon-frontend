@@ -232,24 +232,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color:
-                            isIndex0 ? Color(0xffd33361) : Colors.transparent,
-                        offset: Offset(0.0, 65),
-                        blurRadius: 40,
-                        spreadRadius: 1,
-                      ),
-                      BoxShadow(
-                        color:
-                            isIndex0 ? Color(0xffcfd8dc) : Colors.transparent,
-                        offset: Offset(0.0, 130),
-                        blurRadius: 7,
-                        spreadRadius: 43,
-                      ),
-                    ],
-                  ),
+                  // decoration: BoxDecoration(
+                  //   boxShadow: [
+                  //     BoxShadow(
+                  //       color:
+                  //           isIndex0 ? Color(0xffd33361) : Colors.transparent,
+                  //       offset: Offset(0.0, 65),
+                  //       blurRadius: 40,
+                  //       spreadRadius: 1,
+                  //     ),
+                  //     BoxShadow(
+                  //       color:
+                  //           isIndex0 ? Color(0xffcfd8dc) : Colors.transparent,
+                  //       offset: Offset(0.0, 130),
+                  //       blurRadius: 7,
+                  //       spreadRadius: 43,
+                  //     ),
+                  //   ],
+                  // ),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Tab(
@@ -273,24 +273,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color:
-                            isIndex0 ? Colors.transparent : Color(0xffd33361),
-                        offset: Offset(0.0, 65),
-                        blurRadius: 40,
-                        spreadRadius: 1,
-                      ),
-                      BoxShadow(
-                        color:
-                            isIndex0 ? Colors.transparent : Color(0xffcfd8dc),
-                        offset: Offset(0.0, 130),
-                        blurRadius: 7,
-                        spreadRadius: 43,
-                      ),
-                    ],
-                  ),
+                  // decoration: BoxDecoration(
+                  //   boxShadow: [
+                  //     BoxShadow(
+                  //       color:
+                  //           isIndex0 ? Colors.transparent : Color(0xffd33361),
+                  //       offset: Offset(0.0, 65),
+                  //       blurRadius: 40,
+                  //       spreadRadius: 1,
+                  //     ),
+                  //     BoxShadow(
+                  //       color:
+                  //           isIndex0 ? Colors.transparent : Color(0xffcfd8dc),
+                  //       offset: Offset(0.0, 130),
+                  //       blurRadius: 7,
+                  //       spreadRadius: 43,
+                  //     ),
+                  //   ],
+                  // ),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Tab(
