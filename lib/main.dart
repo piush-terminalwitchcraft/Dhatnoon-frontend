@@ -61,21 +61,21 @@ class LoginPage extends StatelessWidget {
     print("Error is generated here");
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            // if (snapshot.hasData) {
-            //   return MyHomePage();
-            // } else if(snapshot.connectionState == ConnectionState.waiting){
-            //   return Center(child: CircularProgressIndicator());
-            // } else if(snapshot.hasError){
-            //   return Center(child: Text("Something went wrong"));
-            // }
-            // else {
-            //   return  LogIn();
-            // }
-            return LogIn();
-          }),
+      body:  FutureBuilder<User>(
+            future: Future.value(FirebaseAuth.instance.currentUser),
+            builder: (BuildContext context, AsyncSnapshot<User> snapshot){
+              // print(snapshot.data);
+                       if (snapshot.hasData){
+                           User user = snapshot.data!; // this is your user instance
+                           /// is because there is user already logged
+                           print(snapshot.data!);
+                           return MyHomePage();
+                        }
+                         /// other way there is no user logged.
+                         return LogIn();
+             }
+          )
+     
     );
   }
 }
