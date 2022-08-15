@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:components/screens/login.dart';
+import 'package:components/state_management/list_item.dart';
 
 import 'package:components/state_management/state_of_back_cam_pic.dart';
 import 'package:components/state_management/state_of_back_cam_rec.dart';
@@ -55,6 +56,8 @@ class MyApp extends StatelessWidget {
 
   StateOfFrontCamRec stateOfFrontCamRec = Get.put(StateOfFrontCamRec());
   StateOfBackCamRec stateOfBackCamRec = Get.put(StateOfBackCamRec());
+
+  ListItem listItem = Get.put(ListItem());
 
   @override
   Widget build(BuildContext context) {

@@ -327,10 +327,6 @@ class _AccordionPage1State extends State<AccordionPage1> {
   StateOfFrontCamRec stateOfFrontCamRec = Get.find();
   StateOfBackCamRec stateOfBackCamRec = Get.find();
 
-  // geo-location
-  String _latitude = "0.0";
-  String _longitude = "0.0";
-
   final _headerStyle = const TextStyle(
       color: Color.fromARGB(255, 0, 0, 0),
       fontSize: 15,
@@ -435,9 +431,8 @@ class _AccordionPage1State extends State<AccordionPage1> {
               //show notification
               AwesomeNotifications().createNotification(
                   content: NotificationContent(
-                      //simgple notification
                       id: 123,
-                      channelKey: 'basic', //set configuration wuth key "basic"
+                      channelKey: 'basic',
                       title: "From - ${document['senderEmail']}",
                       body:
                           "need access to \n ${document['mode']} mode",

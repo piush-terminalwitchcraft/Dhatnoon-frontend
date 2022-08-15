@@ -28,6 +28,8 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'dart:io' as iofile;
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../state_management/list_item.dart';
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
 
@@ -36,6 +38,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  ListItem listItem = Get.find();
+
   bool _isOpened = false;
 
   // for tabs
@@ -378,12 +382,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 10),
                   InkWell(
-                    onTap: () async {
-                      var res = await Get.to(ListWheel());
-                      setState(() {
-                        _service = res;
-                        print(_service);
-                      });
+                    onTap: () {
+                      Get.to(ListWheel());
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -518,7 +518,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           'endTime_Hours': _endTimeHour,
           'endTime_minutes': _endTimeMinute,
           'status': 'pending',
-          'mode': _service,
+          'mode': listItem.listItem.value,
         })
         .catchError((e) => {
               Fluttertoast.showToast(

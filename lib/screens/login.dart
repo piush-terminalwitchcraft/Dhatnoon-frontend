@@ -423,7 +423,7 @@ class _LogInState extends State<LogIn> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim())
           .then((userCredential) {
-        print("Success");
+        print(userCredential.user?.displayName);
         Get.to(MyHomePage());
       });
     } on FirebaseAuthException catch (e) {
