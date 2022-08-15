@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:components/screens/login.dart';
+import 'package:components/state_management/list_item.dart';
 
 import 'package:components/state_management/state_of_back_cam_pic.dart';
 import 'package:components/state_management/state_of_back_cam_rec.dart';
@@ -14,14 +15,34 @@ import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-void main() async {
+
+import 'package:awesome_notifications/awesome_notifications.dart';
+
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // final cameras = await availableCameras();
-  // final front_Camera = cameras[1];  // front camera
-  // final rear_Camera = cameras[0];
+
+  final cameras = await availableCameras();
+  final front_Camera = cameras[1];  // front camera
+  final rear_Camera = cameras[0];
+
+  AwesomeNotifications().initialize(
+     null, 
+     [            // notification icon 
+        NotificationChannel(
+            channelGroupKey: 'basic_test',
+            channelKey: 'basic',
+            channelName: 'Basic notifications',
+            channelDescription: 'Notification channel for basic tests',
+            channelShowBadge: true,
+            importance: NotificationImportance.High,
+            enableVibration: false,
+        ),
+
+     ]
+  );
     // rear camera
   runApp(MyApp());
 }
@@ -36,6 +57,8 @@ class MyApp extends StatelessWidget {
 
   StateOfFrontCamRec stateOfFrontCamRec = Get.put(StateOfFrontCamRec());
   StateOfBackCamRec stateOfBackCamRec = Get.put(StateOfBackCamRec());
+
+  ListItem listItem = Get.put(ListItem());
 
   @override
   Widget build(BuildContext context) {

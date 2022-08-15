@@ -28,6 +28,8 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'dart:io' as iofile;
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../state_management/list_item.dart';
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
 
@@ -36,6 +38,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  ListItem listItem = Get.find();
+
   bool _isOpened = false;
 
   // for tabs
@@ -232,24 +236,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color:
-                            isIndex0 ? Color(0xffd33361) : Colors.transparent,
-                        offset: Offset(0.0, 65),
-                        blurRadius: 40,
-                        spreadRadius: 1,
-                      ),
-                      BoxShadow(
-                        color:
-                            isIndex0 ? Color(0xffcfd8dc) : Colors.transparent,
-                        offset: Offset(0.0, 130),
-                        blurRadius: 7,
-                        spreadRadius: 43,
-                      ),
-                    ],
-                  ),
+                  // decoration: BoxDecoration(
+                  //   boxShadow: [
+                  //     BoxShadow(
+                  //       color:
+                  //           isIndex0 ? Color(0xffd33361) : Colors.transparent,
+                  //       offset: Offset(0.0, 65),
+                  //       blurRadius: 40,
+                  //       spreadRadius: 1,
+                  //     ),
+                  //     BoxShadow(
+                  //       color:
+                  //           isIndex0 ? Color(0xffcfd8dc) : Colors.transparent,
+                  //       offset: Offset(0.0, 130),
+                  //       blurRadius: 7,
+                  //       spreadRadius: 43,
+                  //     ),
+                  //   ],
+                  // ),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Tab(
@@ -273,24 +277,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color:
-                            isIndex0 ? Colors.transparent : Color(0xffd33361),
-                        offset: Offset(0.0, 65),
-                        blurRadius: 40,
-                        spreadRadius: 1,
-                      ),
-                      BoxShadow(
-                        color:
-                            isIndex0 ? Colors.transparent : Color(0xffcfd8dc),
-                        offset: Offset(0.0, 130),
-                        blurRadius: 7,
-                        spreadRadius: 43,
-                      ),
-                    ],
-                  ),
+                  // decoration: BoxDecoration(
+                  //   boxShadow: [
+                  //     BoxShadow(
+                  //       color:
+                  //           isIndex0 ? Colors.transparent : Color(0xffd33361),
+                  //       offset: Offset(0.0, 65),
+                  //       blurRadius: 40,
+                  //       spreadRadius: 1,
+                  //     ),
+                  //     BoxShadow(
+                  //       color:
+                  //           isIndex0 ? Colors.transparent : Color(0xffcfd8dc),
+                  //       offset: Offset(0.0, 130),
+                  //       blurRadius: 7,
+                  //       spreadRadius: 43,
+                  //     ),
+                  //   ],
+                  // ),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Tab(
@@ -332,6 +336,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             centerTitle: true,
           ),
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               Text("ok"),
               AccordionPage(),
@@ -377,14 +382,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 10),
                   InkWell(
-                    onTap: () async {
+
+                    onTap: (() async {
                       var res = await Get.to(ListWheel());
                       print(res);
                       setState(() {
                         _service = res;
                         print(_service);
-                      });
-                    },
+                      });}),
+
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
@@ -518,7 +524,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           'endTime_Hours': _endTimeHour,
           'endTime_minutes': _endTimeMinute,
           'status': 'pending',
-          'mode': _service,
+          'mode': listItem.listItem.value,
         })
         .catchError((e) => {
               Fluttertoast.showToast(
