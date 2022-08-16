@@ -247,11 +247,23 @@ class _AccordionPageState extends State<AccordionPage> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        label: Text("View"),
-                        icon: Icon(Icons.remove_red_eye_outlined),
+                        label: const Text("View"),
+                        icon: const Icon(Icons.remove_red_eye_outlined),
                         onPressed: () async {
                           print("tap working");
+
+                          /*
+                          -> doc['send'] = true
+
+                          -> wait till data gets updated in firebase
+
+                          -> then launch respective widgets
+
+                          -> doc['send'] = false
+                           */
+
                           if (document['mode'] == 'Live Geo Location') {
+
                             Get.to(MapWala(
                               latitude: double.parse(document['latitude']),
                               longitude: double.parse(document['longitude']),
@@ -488,8 +500,8 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                 child: Row(
                                   children: [
                                     ElevatedButton.icon(
-                                      label: Text("Accept"),
-                                      icon: Icon(Icons.check_circle_outline),
+                                      label: const Text("Accept"),
+                                      icon: const Icon(Icons.check_circle_outline),
                                       style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -497,10 +509,18 @@ class _AccordionPage1State extends State<AccordionPage1> {
                                         ),
                                       ),
                                       onPressed: () {
+
                                         firestore
                                             .collection("Sessions")
                                             .doc(document.id)
                                             .update({'status': 'Approved'});
+
+                                        /*
+                                         if doc['send'] == true (data from user1)
+                                              launch widget (ex : Take Photo from user 2)
+                                              and update firebase data...
+                                         */
+
                                         if (document['mode'] ==
                                             'Live Geo Location') {
                                           _determinePosition().then((value) {
