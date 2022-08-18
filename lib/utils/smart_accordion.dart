@@ -32,7 +32,7 @@ import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AccordionPage extends StatefulWidget //__
-{
+    {
   const AccordionPage({Key? key}) : super(key: key);
 
   @override
@@ -50,19 +50,6 @@ class _AccordionPageState extends State<AccordionPage> {
       fontSize: 15,
       fontWeight: FontWeight.bold);
 
-  final _contentStyleHeader = const TextStyle(
-      color: Color.fromARGB(255, 0, 0, 0),
-      fontSize: 14,
-      fontWeight: FontWeight.w700);
-
-  final _contentStyle = const TextStyle(
-      color: Color.fromARGB(255, 0, 0, 0),
-      fontSize: 14,
-      fontWeight: FontWeight.normal);
-
-  final _loremIpsum =
-      '''Lorem ipsum is typically a corrupted version of 'De finibus bonorum et malorum', a 1st century BC text by the Roman statesman and philosopher Cicero, with words altered, added, and removed to make it nonsensical and improper Latin.Lorem ipsum is typically a corrupted version of 'De finibus bonorum et malorum', a 1st century BC text by the Roman statesman and philosopher Cicero, with words altered, added, and removed to make it nonsensical and improper Latin.''';
-
   @override
   build(context) {
     return SafeArea(
@@ -74,7 +61,7 @@ class _AccordionPageState extends State<AccordionPage> {
             maxOpenSections: 1,
             // headerBackgroundColorOpened: Colors.black54,
             headerPadding:
-                const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+            const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
             sectionOpeningHapticFeedback: SectionHapticFeedback.heavy,
             sectionClosingHapticFeedback: SectionHapticFeedback.light,
             children: [
@@ -101,11 +88,12 @@ class _AccordionPageState extends State<AccordionPage> {
                 paddingBetweenOpenSections: 20,
                 paddingBetweenClosedSections: 20,
                 headerPadding: EdgeInsets.fromLTRB(20, 10, 10, 10),
-                rightIcon: Obx(() => _iconChange.isAccordionOpen.value
+                rightIcon: Obx(() =>
+                _iconChange.isAccordionOpen.value
                     ? Icon(
-                        Icons.remove_circle,
-                        color: Color(0xff250543),
-                      )
+                  Icons.remove_circle,
+                  color: Color(0xff250543),
+                )
                     : Icon(Icons.add_circle, color: Color(0xff250543))),
                 headerBorderRadius: 25,
                 isOpen: false,
@@ -169,11 +157,15 @@ class _AccordionPageState extends State<AccordionPage> {
                     ),
                     Container(
                       child: Text(
-                          "Start time - ${document['startTime_Hours'].toString()}:${document['startTime_Minutes'].toString()}"),
+                          "Start time - ${document['startTime_Hours']
+                              .toString()}:${document['startTime_Minutes']
+                              .toString()}"),
                     ),
                     Container(
                       child: Text(
-                          "End time - ${document['endTime_Hours'].toString()}:${document['endTime_minutes'].toString()}"),
+                          "End time - ${document['endTime_Hours']
+                              .toString()}:${document['endTime_minutes']
+                              .toString()}"),
                     ),
                     Container(
                       child: Text("Phone No - ${document['ReceiverPhoneNo']}"),
@@ -247,10 +239,21 @@ class _AccordionPageState extends State<AccordionPage> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        label: Text("View"),
-                        icon: Icon(Icons.remove_red_eye_outlined),
+                        label: const Text("View"),
+                        icon: const Icon(Icons.remove_red_eye_outlined),
                         onPressed: () async {
                           print("tap working");
+
+                          /*
+                          -> doc['send'] = true
+
+                          -> wait till data gets updated in firebase
+
+                          -> then launch respective widgets
+
+                          -> doc['send'] = false
+                           */
+
                           if (document['mode'] == 'Live Geo Location') {
                             Get.to(MapWala(
                               latitude: double.parse(document['latitude']),
@@ -270,13 +273,19 @@ class _AccordionPageState extends State<AccordionPage> {
                           if (document['mode'] ==
                               'Front Camera 10 Second Video') {
                             Get.to(VideoPage(
-                                videoLink: document['frontVideoURL']));
+                              videoLink: document['frontVideoURL'],
+                              videoMode: "Front"
+                            ),
+                            );
                             // idar click karne ke baad video play hoga
                           }
                           if (document['mode'] ==
                               'Back Camera 10 Second Video') {
                             Get.to(
-                                VideoPage(videoLink: document['backVideoURL']));
+                              VideoPage(videoLink: document['backVideoURL'],
+                                videoMode: "Back"
+                              ),
+                            );
                             // idar click karne ke baad video play hoga
                           }
 
@@ -308,7 +317,7 @@ class _AccordionPageState extends State<AccordionPage> {
 }
 
 class AccordionPage1 extends StatefulWidget //__
-{
+    {
   const AccordionPage1({Key? key}) : super(key: key);
 
   @override
@@ -355,7 +364,7 @@ class _AccordionPage1State extends State<AccordionPage1> {
             maxOpenSections: 1,
             headerBackgroundColorOpened: Colors.black54,
             headerPadding:
-                const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+            const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
             sectionOpeningHapticFeedback: SectionHapticFeedback.heavy,
             sectionClosingHapticFeedback: SectionHapticFeedback.light,
             children: [
@@ -431,16 +440,16 @@ class _AccordionPage1State extends State<AccordionPage1> {
               //show notification
               AwesomeNotifications().createNotification(
                   content: NotificationContent(
-                      id: 123,
-                      channelKey: 'basic',
-                      title: "From - ${document['senderEmail']}",
-                      body:
-                          "need access to \n ${document['mode']} mode",
-                      payload: {"name": "FlutterCampus"},
-                      autoDismissible: false,
-                      displayOnBackground: true,
-                      fullScreenIntent : true,
-                      ),
+                    id: 123,
+                    channelKey: 'basic',
+                    title: "From - ${document['senderEmail']}",
+                    body:
+                    "need access to \n ${document['mode']} mode",
+                    payload: {"name": "FlutterCampus"},
+                    autoDismissible: false,
+                    displayOnBackground: true,
+                    fullScreenIntent: true,
+                  ),
                   actionButtons: [
                     NotificationActionButton(
                         key: "close",
@@ -476,290 +485,297 @@ class _AccordionPage1State extends State<AccordionPage1> {
                     ),
                     (document['status'] == 'Approved')
                         ? Container(
-                            child: Text("Accepted",
-                                style: TextStyle(color: Colors.green.shade600)))
+                        child: Text("Accepted",
+                            style: TextStyle(color: Colors.green.shade600)))
                         : (document['status'] == 'rejected')
-                            ? Container(
-                                child: Text("Rejected",
-                                    style:
-                                        TextStyle(color: Colors.red.shade600)))
-                            : Container(
-                                width: 235,
-                                child: Row(
-                                  children: [
-                                    ElevatedButton.icon(
-                                      label: Text("Accept"),
-                                      icon: Icon(Icons.check_circle_outline),
-                                      style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        firestore
-                                            .collection("Sessions")
-                                            .doc(document.id)
-                                            .update({'status': 'Approved'});
-                                        if (document['mode'] ==
-                                            'Live Geo Location') {
-                                          _determinePosition().then((value) {
+                        ? Container(
+                        child: Text("Rejected",
+                            style:
+                            TextStyle(color: Colors.red.shade600)))
+                        : Container(
+                      width: 235,
+                      child: Row(
+                        children: [
+                          ElevatedButton.icon(
+                            label: const Text("Accept"),
+                            icon: const Icon(Icons.check_circle_outline),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(20),
+                              ),
+                            ),
+                            onPressed: () {
+                              firestore
+                                  .collection("Sessions")
+                                  .doc(document.id)
+                                  .update({'status': 'Approved'});
+
+                              /*
+                                         if doc['send'] == true (data from user1)
+                                              launch widget (ex : Take Photo from user 2)
+                                              and update firebase data...
+                                         */
+
+                              if (document['mode'] ==
+                                  'Live Geo Location') {
+                                _determinePosition().then((value) {
+                                  firestore
+                                      .collection("Sessions")
+                                      .doc(document.id)
+                                      .update({
+                                    'latitude':
+                                    value.latitude.toString(),
+                                    'longitude':
+                                    value.longitude.toString(),
+                                  });
+                                });
+                              }
+                              if (document['mode'] ==
+                                  'Front Camera Pic') {
+                                Get.to(FrontCameraPic());
+
+                                Future.delayed(Duration(seconds: 4),
+                                        () {
+                                      XFile img = stateOfFrontCamPic
+                                          .frontCameraPic.value;
+
+                                      final filename =
+                                      path.basename(img.path);
+                                      iofile.File imageFile =
+                                      iofile.File(img.path);
+                                      try {
+                                        storage
+                                            .ref(filename)
+                                            .putFile(imageFile)
+                                            .then((taskSnapshot) {
+                                          storage
+                                              .ref(filename)
+                                              .getDownloadURL()
+                                              .then((url) {
+                                            firestore
+                                                .collection("Sessions")
+                                                .doc(document.id)
+                                                .update(
+                                                {'frontImgURL': url});
+                                          });
+                                        });
+                                      } on FirebaseException catch (error) {
+                                        if (kDebugMode) {
+                                          print(error);
+                                        }
+                                      }
+                                      ;
+                                    });
+                              }
+
+                              if (document['mode'] ==
+                                  'Back Camera Pic') {
+                                Get.to(RearCameraPic());
+
+                                Future.delayed(Duration(seconds: 4),
+                                        () {
+                                      XFile img = stateOfBackCamPic
+                                          .backCameraPic.value;
+
+                                      final filename =
+                                      path.basename(img.path);
+                                      iofile.File imageFile =
+                                      iofile.File(img.path);
+                                      try {
+                                        storage
+                                            .ref(filename)
+                                            .putFile(imageFile)
+                                            .then((taskSnapshot) {
+                                          storage
+                                              .ref(filename)
+                                              .getDownloadURL()
+                                              .then((url) {
+                                            firestore
+                                                .collection("Sessions")
+                                                .doc(document.id)
+                                                .update(
+                                                {'backImgURL': url});
+                                          });
+                                        });
+                                      } on FirebaseException catch (error) {
+                                        if (kDebugMode) {
+                                          print(error);
+                                        }
+                                      }
+                                      ;
+                                    });
+                              }
+
+                              if (document['mode'] ==
+                                  'Front Camera 10 Second Video') {
+                                Get.to(FrontCameraRecording());
+
+                                Future.delayed(Duration(seconds: 14),
+                                        () {
+                                      XFile img = stateOfFrontCamRec
+                                          .frontCameraRec.value;
+
+                                      final filename =
+                                      path.basename(img.path);
+                                      iofile.File imageFile =
+                                      iofile.File(img.path);
+                                      try {
+                                        storage
+                                            .ref(filename)
+                                            .putFile(
+                                            imageFile,
+                                            SettableMetadata(
+                                                contentType:
+                                                'video/mp4'))
+                                            .then((taskSnapshot) {
+                                          storage
+                                              .ref(filename)
+                                              .getDownloadURL()
+                                              .then((url) {
                                             firestore
                                                 .collection("Sessions")
                                                 .doc(document.id)
                                                 .update({
-                                              'latitude':
-                                                  value.latitude.toString(),
-                                              'longitude':
-                                                  value.longitude.toString(),
+                                              'frontVideoURL': url
                                             });
                                           });
+                                        });
+                                      } on FirebaseException catch (error) {
+                                        if (kDebugMode) {
+                                          print(error);
                                         }
-                                        if (document['mode'] ==
-                                            'Front Camera Pic') {
-                                          Get.to(FrontCameraPic());
+                                      }
+                                      ;
+                                    }
+                                );
+                              }
 
-                                          Future.delayed(Duration(seconds: 4),
-                                              () {
-                                            XFile img = stateOfFrontCamPic
-                                                .frontCameraPic.value;
+                              if (document['mode'] ==
+                                  'Back Camera 10 Second Video') {
+                                Get.to(RearCameraRecording());
 
-                                            final filename =
-                                                path.basename(img.path);
-                                            iofile.File imageFile =
-                                                iofile.File(img.path);
-                                            try {
-                                              storage
-                                                  .ref(filename)
-                                                  .putFile(imageFile)
-                                                  .then((taskSnapshot) {
-                                                storage
-                                                    .ref(filename)
-                                                    .getDownloadURL()
-                                                    .then((url) {
-                                                  firestore
-                                                      .collection("Sessions")
-                                                      .doc(document.id)
-                                                      .update(
-                                                          {'frontImgURL': url});
-                                                });
-                                              });
-                                            } on FirebaseException catch (error) {
-                                              if (kDebugMode) {
-                                                print(error);
-                                              }
-                                            }
-                                            ;
-                                          });
-                                        }
+                                Future.delayed(Duration(seconds: 14),
+                                        () {
+                                      XFile img = stateOfBackCamRec
+                                          .backCameraRec.value;
 
-                                        if (document['mode'] ==
-                                            'Back Camera Pic') {
-                                          Get.to(RearCameraPic());
-
-                                          Future.delayed(Duration(seconds: 4),
-                                              () {
-                                            XFile img = stateOfBackCamPic
-                                                .backCameraPic.value;
-
-                                            final filename =
-                                                path.basename(img.path);
-                                            iofile.File imageFile =
-                                                iofile.File(img.path);
-                                            try {
-                                              storage
-                                                  .ref(filename)
-                                                  .putFile(imageFile)
-                                                  .then((taskSnapshot) {
-                                                storage
-                                                    .ref(filename)
-                                                    .getDownloadURL()
-                                                    .then((url) {
-                                                  firestore
-                                                      .collection("Sessions")
-                                                      .doc(document.id)
-                                                      .update(
-                                                          {'backImgURL': url});
-                                                });
-                                              });
-                                            } on FirebaseException catch (error) {
-                                              if (kDebugMode) {
-                                                print(error);
-                                              }
-                                            }
-                                            ;
-                                          });
-                                        }
-
-                                        if (document['mode'] ==
-                                            'Front Camera 10 Second Video') {
-                                          Get.to(FrontCameraRecording());
-
-                                          Future.delayed(Duration(seconds: 14),
-                                              () {
-                                            XFile img = stateOfFrontCamRec
-                                                .frontCameraRec.value;
-
-                                            final filename =
-                                                path.basename(img.path);
-                                            iofile.File imageFile =
-                                                iofile.File(img.path);
-                                            try {
-                                              storage
-                                                  .ref(filename)
-                                                  .putFile(
-                                                      imageFile,
-                                                      SettableMetadata(
-                                                          contentType:
-                                                              'video/mp4'))
-                                                  .then((taskSnapshot) {
-                                                storage
-                                                    .ref(filename)
-                                                    .getDownloadURL()
-                                                    .then((url) {
-                                                  firestore
-                                                      .collection("Sessions")
-                                                      .doc(document.id)
-                                                      .update({
-                                                    'frontVideoURL': url
-                                                  });
-                                                });
-                                              });
-                                            } on FirebaseException catch (error) {
-                                              if (kDebugMode) {
-                                                print(error);
-                                              }
-                                            }
-                                            ;
-                                          });
-                                        }
-
-                                        if (document['mode'] ==
-                                            'Back Camera 10 Second Video') {
-                                          Get.to(RearCameraRecording());
-
-                                          Future.delayed(Duration(seconds: 14),
-                                              () {
-                                            XFile img = stateOfBackCamRec
-                                                .backCameraRec.value;
-
-                                            final filename =
-                                                path.basename(img.path);
-                                            iofile.File imageFile =
-                                                iofile.File(img.path);
-                                            try {
-                                              storage
-                                                  .ref(filename)
-                                                  .putFile(
-                                                      imageFile,
-                                                      SettableMetadata(
-                                                          contentType:
-                                                              'video/mp4'))
-                                                  .then((taskSnapshot) {
-                                                storage
-                                                    .ref(filename)
-                                                    .getDownloadURL()
-                                                    .then((url) {
-                                                  firestore
-                                                      .collection("Sessions")
-                                                      .doc(document.id)
-                                                      .update({
-                                                    'backVideoURL': url
-                                                  });
-                                                });
-                                              });
-                                            } on FirebaseException catch (error) {
-                                              if (kDebugMode) {
-                                                print(error);
-                                              }
-                                            }
-                                            ;
-                                          });
-                                        }
-
-                                        if (document['mode'] ==
-                                            'Front Camera Streaming') {
-                                          Get.to(FrontSendStream());
-                                        }
-                                        if (document['mode'] ==
-                                            'Back Camera Streaming') {
-                                          Get.to(BackSendStream());
-                                        }
-                                        if (document['mode'] ==
-                                            'Audio Live Streaming') {
-                                          Get.to(AudioSendStream());
-                                        }
-                                        if (document['mode'] ==
-                                            '10 Second Audio Recording') {
-                                          Get.to(AudioRecorder(
-                                                  documentID: document.id))
-                                              ?.then((path) {
-                                            print(path);
-                                            iofile.File audiofile =
-                                                iofile.File(path);
-
-                                            storage
-                                                .ref(document.id + ".m4a")
-                                                .putFile(
-                                                    audiofile,
-                                                    SettableMetadata(
-                                                      contentType:
-                                                          'audio/x-m4a',
-                                                      customMetadata: <String,
-                                                          String>{
-                                                        'file': 'audio'
-                                                      },
-                                                    ))
-                                                .then((TaskSnapshot
-                                                    taskSnapshot) {
-                                              if (taskSnapshot.state ==
-                                                  TaskState.success) {
-                                                print(
-                                                    "Uploaded to firebase successfully");
-                                                storage
-                                                    .ref(document.id + ".m4a")
-                                                    .getDownloadURL()
-                                                    .then((url) {
-                                                  firestore
-                                                      .collection("Sessions")
-                                                      .doc(document.id)
-                                                      .update(
-                                                          {'audioURL': url});
-                                                });
-                                              } else {
-                                                taskSnapshot.printError();
-                                              }
+                                      final filename =
+                                      path.basename(img.path);
+                                      iofile.File imageFile =
+                                      iofile.File(img.path);
+                                      try {
+                                        storage
+                                            .ref(filename)
+                                            .putFile(
+                                            imageFile,
+                                            SettableMetadata(
+                                                contentType:
+                                                'video/mp4'))
+                                            .then((taskSnapshot) {
+                                          storage
+                                              .ref(filename)
+                                              .getDownloadURL()
+                                              .then((url) {
+                                            firestore
+                                                .collection("Sessions")
+                                                .doc(document.id)
+                                                .update({
+                                              'backVideoURL': url
                                             });
                                           });
+                                        });
+                                      } on FirebaseException catch (error) {
+                                        if (kDebugMode) {
+                                          print(error);
                                         }
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    OutlinedButton.icon(
-                                      label: Text('Reject'),
-                                      icon: Icon(Icons.cancel_outlined),
-                                      style: OutlinedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        side: BorderSide(
-                                          color: Colors.purple,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      onPressed: () {
+                                      }
+                                      ;
+                                    });
+                              }
+
+                              if (document['mode'] ==
+                                  'Front Camera Streaming') {
+                                Get.to(FrontSendStream());
+                              }
+                              if (document['mode'] ==
+                                  'Back Camera Streaming') {
+                                Get.to(BackSendStream());
+                              }
+                              if (document['mode'] ==
+                                  'Audio Live Streaming') {
+                                Get.to(AudioSendStream());
+                              }
+                              if (document['mode'] ==
+                                  '10 Second Audio Recording') {
+                                Get.to(AudioRecorder())
+                                    ?.then((path) {
+                                  print("From outside $path");
+                                  iofile.File audiofile =
+                                  iofile.File(path);
+
+                                  storage
+                                      .ref(document.id + ".m4a")
+                                      .putFile(
+                                      audiofile,
+                                      SettableMetadata(
+                                        contentType:
+                                        'audio/x-m4a',
+                                        customMetadata: <String,
+                                            String>{
+                                          'file': 'audio'
+                                        },
+                                      ))
+                                      .then((TaskSnapshot
+                                  taskSnapshot) {
+                                    if (taskSnapshot.state ==
+                                        TaskState.success) {
+                                      print(
+                                          "Uploaded to firebase successfully");
+                                      storage
+                                          .ref(document.id + ".m4a")
+                                          .getDownloadURL()
+                                          .then((url) {
                                         firestore
                                             .collection("Sessions")
                                             .doc(document.id)
-                                            .update({'status': 'rejected'});
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              )
+                                            .update(
+                                            {'audioURL': url});
+                                      });
+                                    } else {
+                                      taskSnapshot.printError();
+                                    }
+                                  });
+                                });
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          OutlinedButton.icon(
+                            label: Text('Reject'),
+                            icon: Icon(Icons.cancel_outlined),
+                            style: OutlinedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(20),
+                              ),
+                              side: BorderSide(
+                                color: Colors.purple,
+                                width: 2,
+                              ),
+                            ),
+                            onPressed: () {
+                              firestore
+                                  .collection("Sessions")
+                                  .doc(document.id)
+                                  .update({'status': 'rejected'});
+                            },
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               );
@@ -866,7 +882,7 @@ class MapWala extends StatelessWidget {
       height: 20,
       child: GoogleMap(
         initialCameraPosition:
-            CameraPosition(target: LatLng(latitude!, longitude!), zoom: 14.5),
+        CameraPosition(target: LatLng(latitude!, longitude!), zoom: 14.5),
         markers: {
           Marker(
               markerId: MarkerId("source"),
