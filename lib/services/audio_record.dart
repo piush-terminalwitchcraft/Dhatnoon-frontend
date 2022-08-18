@@ -6,9 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:record/record.dart';
 
 class AudioRecorder extends StatefulWidget {
-  var documentID;
-
-  AudioRecorder({Key? key, required this.documentID}) : super(key: key);
+  AudioRecorder({Key? key}) : super(key: key);
 
   @override
   State<AudioRecorder> createState() => _AudioRecorderState();
@@ -17,7 +15,6 @@ class AudioRecorder extends StatefulWidget {
 class _AudioRecorderState extends State<AudioRecorder> {
   bool _isRecording = false;
   bool _isPaused = false;
-  int _recordDuration = 0;
   Timer? _timer;
   Timer? _ampTimer;
   final _audioRecorder = Record();
@@ -47,13 +44,9 @@ class _AudioRecorderState extends State<AudioRecorder> {
         if (kDebugMode) {
           print('${AudioEncoder.aacLc.name} supported: $isSupported');
         }
-
-        // final devs = await _audioRecorder.listInputDevices();
-
         await _audioRecorder.start();
 
-        bool isRecording = await _audioRecorder.isRecording();
-
+        _isRecording = await _audioRecorder.isRecording();
 
         Future.delayed(Duration(seconds: 10), () {
           _stop();
@@ -72,13 +65,11 @@ class _AudioRecorderState extends State<AudioRecorder> {
     final path = await _audioRecorder.stop();
     print("From inside $path");
     Navigator.of(context).pop(path);
-
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
+    print(_isRecording);
     return MyHomePage();
   }
 

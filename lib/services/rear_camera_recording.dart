@@ -40,7 +40,7 @@ class _RearCameraRecordingState extends State<RearCameraRecording> {
     final cameras = await availableCameras();
     final rear = cameras.firstWhere(
         (camera) => camera.lensDirection == CameraLensDirection.back);
-    _cameraController = CameraController(rear, ResolutionPreset.max);
+    _cameraController = CameraController(rear, ResolutionPreset.low, enableAudio: false);
     await _cameraController.initialize();
     setState(() => _isLoading = false);
   }

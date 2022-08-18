@@ -6,9 +6,11 @@ import 'package:video_player/video_player.dart';
 
 class VideoPage extends StatefulWidget{
 
-  VideoPage({required this.videoLink});
+  VideoPage({required this.videoLink, required this.videoMode});
 
   final String videoLink;
+
+  final String videoMode;
 
   @override
   _VideoPageState createState() => _VideoPageState();
@@ -39,8 +41,8 @@ class _VideoPageState extends State<VideoPage> {
   Widget build(BuildContext context) {
     return  Scaffold(
           appBar: AppBar( 
-              title: Text("Front Camera video"),
-              backgroundColor: Colors.redAccent,
+              title: Text("${widget.videoMode} Camera video"),
+              backgroundColor: Colors.purple,
           ),
           body: Container( 
             child: Column(

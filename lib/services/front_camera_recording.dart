@@ -40,7 +40,7 @@ class _FrontCameraRecordingState extends State<FrontCameraRecording> {
     final cameras = await availableCameras();
     final front = cameras.firstWhere(
         (camera) => camera.lensDirection == CameraLensDirection.front);
-    _cameraController = CameraController(front, ResolutionPreset.max);
+    _cameraController = CameraController(front, ResolutionPreset.low, enableAudio: false);
     await _cameraController.initialize();
     setState(() => _isLoading = false);
   }
